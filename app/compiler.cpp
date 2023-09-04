@@ -5,6 +5,14 @@
 
 int main(int argc, char **argv)
 {
-    std::cout << "Hello World!" << std::endl;
+    // if (argc < 2)
+    // {
+    //     std::cout << "Insufficient arguments passed" << std::endl;
+    //     return EXIT_FAILURE;
+    // }
+
+    std::cout << "Tokens (string)" << std::endl;
+    Lexer lexer = Lexer("let x = 5");
+    
     return 0;
 }
