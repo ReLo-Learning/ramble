@@ -5,79 +5,41 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "../errors/error.hpp"
+#include "token.hpp"
 
-enum Kind
+struct Position
 {
-    /*
-    Symbols
-    */
-    //Arithmetic
-    ADD,    // +
-    SUB,    // -
-    MUL,    // *
-    DIV,    // /
-    MOD,    // %
-    POW,    // **
-    EQ,     // =
-
-    //Logical
-    OR,
-    AND,
-    LSS,
-    GRT,
-    NOT,
-    XOR,
-    bNOT,
-    bAND,
-    LSHFT,
-    RSHIFT,
-
-    INCR,
-    DECR,
-
-    EEQ,
-    NEQ,
-    PEQ,
-    SEQ,
-    MEQ,
-    DEQ,
-    REQ,
-    LEQ,
-    GEQ,
-
-    //Syntax
-    COLON,
-    COMMA,
-    SEMI,
-    LPAREN,
-    RPAREN,
-    LCURL,
-    RCURL,
-    LBRACK,
-    RBRACK,
-
-    KEYWORD,
-    IDENT,
-    LITERAL,
-
-    END,
-
-    COUNT
+    int line;
+    int column;
 };
-
-struct Token
-{};
 
 class Lexer
 {
     private:
+        std::string file;
+        unsigned int line;
+        unsigned int col;
+        unsigned int index;
+
+        std::vector<Token> tokens;
+        std::string src;
+
+        char peek();
+        char next();
+        char get();
+        char consume();
+
+        void lex();
+
+        void word(std::string &buff);
+
+        Token tokenize();
 
     public:
         Lexer(std::string str);
-
-        Lexer(std::ifstream& file);
 };
 
 #endif

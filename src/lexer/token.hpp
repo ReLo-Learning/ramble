@@ -1,0 +1,33 @@
+#pragma once
+
+#ifndef TOKEN_HPP
+#define TOKEN_HPP
+
+#include <iostream>
+#include <string>
+#include <iomanip>
+
+#include "kind.hpp"
+
+class Token
+{
+private:
+    int line;
+    int column;
+
+    Kind type;
+    int SubType;
+
+    std::string value;
+
+public:
+    Token(Kind kind);
+    Token(Kind kind, int line, int column);
+    Token(Kind kind, std::string value, int line, int column);
+
+    Kind kind();
+
+    friend std::ostream &operator<<(std::ostream &os, const Token &token);
+};
+
+#endif
