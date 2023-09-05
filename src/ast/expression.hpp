@@ -4,12 +4,16 @@
 #define EXPRESSION_HPP
 
 #include <memory>
+#include <iostream>
+
 #include "../lexer/lexer.hpp"
 
 class Expr
 {
 public:
     virtual ~Expr() = default;
+
+    virtual void print() {} 
 };
 
 class IntExpr: public Expr
@@ -18,6 +22,8 @@ class IntExpr: public Expr
 
 public:
     IntExpr(int val) : val(val) {} 
+
+    void print() { std::cout << this->val; }
 };
 
 class FloatExpr: public Expr
