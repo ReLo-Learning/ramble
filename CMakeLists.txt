@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.4)
 
 project(
-    Ramble
+    RambleCompiler
     VERSION 0.1
     DESCRIPTION "The greatest programming language of all time"
     LANGUAGES CXX
@@ -9,9 +9,9 @@ project(
 
 add_subdirectory(src)
 
-add_executable(ramblec ${CMAKE_SOURCE_DIR}/app/compiler.cpp)
+add_executable(ramble ${CMAKE_SOURCE_DIR}/app/compiler.cpp)
 
 target_link_libraries(
-    ramblec PUBLIC ErrorLib LexerLib
+    ramble PUBLIC ErrorLib LexerLib ParserLib
 )
 
