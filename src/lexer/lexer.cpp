@@ -11,15 +11,7 @@ Lexer::Lexer(std::string str)
     this->line = 0;
     this->col = 0;
     this->index = 0;
-    this->src = str;
-
-    lex(); 
-
-    // For debugging purposes
-    for (auto token : this->tokens)
-    {
-        std::cout << token;   
-    }
+    this->src = str; 
 }
 
 //See the next character
@@ -56,7 +48,7 @@ int isKeyword(std::string const &w)
 
 int isIdent(std::string const &w) { return (isalpha(w[0]) || w[0] == '_'); }
 
-Token Lexer::tokenize()
+Token Lexer::m_tokenize()
 {
     for(;;)
     {
@@ -127,9 +119,9 @@ Token Lexer::tokenize()
             {
                 Kind type = INT;
 
-                while (this->index + 1 < this->src.length()  && (isdigit(this->peek()) || this->peek() == '.'))
+                while (isdigit(this->get()) || this->get() == '.')
                 {
-                    if (this->peek() == '.')
+                    if (this->get() == '.')
                     {
                         if (type == FLOAT)
                             std::cout << "Unimplemented ERROR" << std::endl;
@@ -137,7 +129,7 @@ Token Lexer::tokenize()
                         type = FLOAT;
                     }
 
-                    buff.push_back(this->next());
+                    buff.push_back(this->consume());
                 }
 
                 return Token(type, buff, line, col);
@@ -150,16 +142,24 @@ Token Lexer::tokenize()
     }
 }
 
-void Lexer::lex()
+std::vector<Token> Lexer::tokenize()
 {
     //Loop over every character in line
     while(true)
     {
-        Token t = this->tokenize();
+        Token t = this->m_tokenize();
         this->tokens.push_back(t);
 
         if (t.kind() == eof)
             break;
         
     }
+
+    // For debugging purposes
+    for (auto token : this->tokens)
+    {
+        std::cout << token;
+    }
+
+    return this->tokens;
 }

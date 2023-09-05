@@ -18,9 +18,10 @@ private:
     Kind type;
     int SubType;
 
-    std::string value;
 
 public:
+    std::string value;
+    
     Token(Kind kind);
     Token(Kind kind, int line, int column);
     Token(Kind kind, std::string value, int line, int column);

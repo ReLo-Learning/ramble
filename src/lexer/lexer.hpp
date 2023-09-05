@@ -32,14 +32,14 @@ class Lexer
         char get();
         char consume();
 
-        void lex();
-
         void word(std::string &buff);
 
-        Token tokenize();
+        Token m_tokenize();
 
     public:
         Lexer(std::string str);
+        
+        std::vector<Token> tokenize();
 };
 
 #endif
