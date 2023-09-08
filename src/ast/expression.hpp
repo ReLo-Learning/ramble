@@ -7,13 +7,16 @@
 #include <iostream>
 
 #include "../lexer/lexer.hpp"
+#include "../hir/hir.hpp"
 
 class Expr
 {
 public:
     virtual ~Expr() = default;
 
-    virtual void print() {} 
+    virtual std::unique_ptr<HIR::Expr> lower() = 0;
+
+    virtual std::string str() { return ""; } 
 };
 
 class IntExpr: public Expr
@@ -21,9 +24,11 @@ class IntExpr: public Expr
     int val;
 
 public:
-    IntExpr(int val) : val(val) {} 
+    IntExpr(int val) : val(val) {}
 
-    void print() { std::cout << this->val; }
+    std::unique_ptr<HIR::Expr> lower() { return std::make_unique<HIR::Literal<int>>(); };
+
+    std::string str() { return std::to_string(val); }
 };
 
 class FloatExpr: public Expr
@@ -32,6 +37,8 @@ class FloatExpr: public Expr
 
 public:
     FloatExpr(double val) : val(val) {}
+
+    std::string str() { return std::to_string(val); }
 };
 
 class IdentExpr: public Expr
@@ -40,6 +47,8 @@ class IdentExpr: public Expr
 
 public:
     IdentExpr(std::string ident) : ident(ident) {}
+
+    std::ostream &print(std::ostream &os) { return os << this->ident; }
 };
 
 // (Expr)(Op)(Expr)
@@ -50,6 +59,8 @@ class InfixExpr: public Expr
 
 public:
     InfixExpr(Token Op, std::unique_ptr<Expr> LHS, std::unique_ptr<Expr> RHS) : Op(Op), LHS(std::move(LHS)), RHS(std::move(RHS)) {}
+
+    std::ostream &print(std::ostream &os) { return os << LHS << getType(Op.kind()) << RHS; }
 };
 
 // (Op)(Expr)
