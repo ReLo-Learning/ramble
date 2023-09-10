@@ -14,7 +14,7 @@ class Expr
 public:
     virtual ~Expr() = default;
 
-    virtual std::unique_ptr<HIR::Expr> lower() = 0;
+    // virtual std::unique_ptr<HExpr> lower() = 0;
 
     virtual std::string str() { return ""; } 
 };
@@ -26,7 +26,7 @@ class IntExpr: public Expr
 public:
     IntExpr(int val) : val(val) {}
 
-    std::unique_ptr<HIR::Expr> lower() { return std::make_unique<HIR::Literal<int>>(); };
+    // std::unique_ptr<HExpr> lower() override { return std::make_unique<Literal<int>>(); };
 
     std::string str() { return std::to_string(val); }
 };

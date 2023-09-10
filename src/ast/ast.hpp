@@ -20,16 +20,6 @@ class Program
 
 public:
     Program() {}
-
-    friend std::ostream& operator<<(std::ostream& os, const Program& program)
-    {
-        for( auto& stmt : program.stmts )
-        {
-            stmt->print();
-        }
-        
-        return os;
-    }
 };
 
 #endif

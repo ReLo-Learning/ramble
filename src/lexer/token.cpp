@@ -23,7 +23,7 @@ Kind Token::kind(){ return this->type; }
 std::ostream &operator<<(std::ostream &os, const Token& token)
 {
     os << std::left;
-    os << std::setw(10) << TokenKind[token.type];
+    os << std::setw(10) << getType(token.type);
     os << "(" << std::setw(5) << token.line << ":" << std::setw(5) << token.column << ")";
 
     if (token.value.length() > 0)

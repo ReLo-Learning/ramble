@@ -6,33 +6,25 @@
 #include <map>
 #include <vector>
 #include <memory>
+#include <string>
 
-namespace HIR 
-{
-    class HIR
-    {
-        Stmt *program;
 
-    public:
-        HIR();        
-    };
-
-    class Expr
+    class HExpr
     {
     public:
         int type;
 
-        virtual ~Expr() = default;
+        virtual ~HExpr() = default;
 
         virtual std::string str() = 0;
 
         virtual void lower() = 0;
 
-        virtual bool operator==(const Expr& expr) = 0;
+        virtual bool operator==(const HExpr& expr) = 0;
     };
 
     template <typename T>
-    class Literal: public Expr
+    class Literal: public HExpr
     {
         T value;
 
@@ -44,20 +36,28 @@ namespace HIR
 
         void lower() override;
 
-        bool operator==(const Expr& expr) override;
+        bool operator==(const HExpr& expr) override;
     };
 
-    class FuncCall: public Expr
+    class FuncCall: public HExpr
     {
     public:
         FuncCall();
     };
 
-    class Stmt
+    class HStmt
     {
     public:
-        virtual ~Stmt() = default;
+        virtual ~HStmt() = default;
     };
-}
+
+    class HIR
+    {
+        std::unique_ptr<HStmt> program;
+
+    public:
+        HIR();
+    };
+
 
 #endif

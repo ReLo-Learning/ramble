@@ -16,7 +16,6 @@ std::unique_ptr<Stmt> Parser::ParseVarDecl()
     std::unique_ptr<Expr> expr = std::move(this->ParseExpression());
 
     auto s = std::make_unique<VarDecl>(ident, std::move(expr));
-    s->print();
 
     return s;
 }
