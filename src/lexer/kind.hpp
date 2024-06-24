@@ -13,10 +13,10 @@ enum Kind
 
     literal_begin,
     IDENT,
-    INT,
-    FLOAT,
-    CHAR,
-    STRING,
+    INT_LIT,
+    FLOAT_LIT,
+    CHAR_LIT,
+    STRING_LIT,
     literal_end,
 
     operator_begin,
@@ -76,10 +76,34 @@ enum Kind
 
     keyword_begin,
     LET,
+    INT,
+    FLOAT,
+    CHAR,
+    BOOL,
+    CONST,
+    UNSIGNED,
+    EXTERN,
+    PRIVATE,
 
-    BREAK,
-    CASE,
     SWITCH,
+    CASE,
+    BREAK,
+    DEFAULT,
+    FOR,
+    WHILE,
+    CONTINUE,
+    IF,
+    ELIF,
+    ELSE,
+
+    STRUCT,
+    TYPEDEF,
+    UNION,
+    ENUM,
+
+    FUNC,
+    RETURN,
+
     keyword_end,
 };
 

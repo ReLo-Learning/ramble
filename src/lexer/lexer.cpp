@@ -2,6 +2,14 @@
 
 const std::string KEYWORDS[] = {
     "let",
+    "int",
+    "float",
+    "char",
+    "bool",
+    "const",
+    "unsigned",
+    "extern",
+    "private"
 
     "end"
 };
