@@ -20,7 +20,7 @@ Token::Token(Kind kind, std::string value, int line, int column)
 
 Kind Token::kind(){ return this->type; }
 bool Token::is(Kind kind) { return this->kind() == kind; }
-bool Token::isAny(int len, const Kind *kinds)
+bool Token::isAny(int len, const Kind kinds[])
 {
     bool ret_val = false;
 
