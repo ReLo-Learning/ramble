@@ -28,6 +28,7 @@ public:
 
     Kind kind();
     bool is(Kind kind);
+    bool isAny(int len, const Kind *kinds);
 
     friend std::ostream &operator<<(std::ostream &os, const Token &token);
 };

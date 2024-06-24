@@ -20,6 +20,19 @@ Token::Token(Kind kind, std::string value, int line, int column)
 
 Kind Token::kind(){ return this->type; }
 bool Token::is(Kind kind) { return this->kind() == kind; }
+bool Token::isAny(int len, const Kind *kinds)
+{
+    bool ret_val = false;
+
+    for(int i = 0; i < len; i++)
+    {
+        ret_val = this->is(kinds[i]);
+        if (ret_val)
+            break;
+    }
+
+    return ret_val;
+}
 
 std::ostream &operator<<(std::ostream &os, const Token& token)
 {
