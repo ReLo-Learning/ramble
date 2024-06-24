@@ -27,6 +27,7 @@ public:
     Token(Kind kind, std::string value, int line, int column);
 
     Kind kind();
+    bool is(Kind kind);
 
     friend std::ostream &operator<<(std::ostream &os, const Token &token);
 };

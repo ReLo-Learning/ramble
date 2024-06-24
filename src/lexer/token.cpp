@@ -19,6 +19,7 @@ Token::Token(Kind kind, std::string value, int line, int column)
 }
 
 Kind Token::kind(){ return this->type; }
+bool Token::is(Kind kind) { return this->kind() == kind; }
 
 std::ostream &operator<<(std::ostream &os, const Token& token)
 {
