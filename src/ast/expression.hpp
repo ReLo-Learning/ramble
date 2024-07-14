@@ -5,82 +5,108 @@
 
 #include <memory>
 #include <iostream>
+#include <type_traits>
 
 #include "../lexer/lexer.hpp"
 #include "../hir/hir.hpp"
 
-class Expr
+namespace AST
+{
+
+class ExprVisitor;
+
+// Base class
+class IExpr
 {
 public:
-    virtual ~Expr() = default;
-
-    // virtual std::unique_ptr<HExpr> lower() = 0;
-
-    virtual std::string str() { return ""; } 
+    virtual ~IExpr() = default;
+    virtual void accept(ExprVisitor *v) = 0;
+    virtual std::string str() = 0;
 };
 
-class IntExpr: public Expr
+class IntLiteral;
+class FloatLiteral;
+class IdentExpr;
+class InfixExpr;
+class PrefixExpr;
+class PostfixExpr;
+class ExprVisitor
 {
-    int val;
-
 public:
-    IntExpr(int val) : val(val) {}
-
-    // std::unique_ptr<HExpr> lower() override { return std::make_unique<Literal<int>>(); };
-
-    std::string str() { return std::to_string(val); }
+    virtual void visit(IntLiteral *expr);
+    virtual void visit(FloatLiteral *expr);
+    virtual void visit(IdentExpr *expr);
+    virtual void visit(InfixExpr *expr);
+    virtual void visit(PrefixExpr *expr);
+    virtual void visit(PostfixExpr *expr);
 };
 
-class FloatExpr: public Expr
+class IntLiteral: public IExpr
 {
-    double val;
+private:
+    int m_value;
 
 public:
-    FloatExpr(double val) : val(val) {}
-
-    std::string str() { return std::to_string(val); }
+    IntLiteral(int value) : m_value(value) {};
+    void accept(ExprVisitor *v) { v->visit(this); };
+    std::string str() { return std::to_string(m_value); };
 };
 
-class IdentExpr: public Expr
+class FloatLiteral : public IExpr
 {
-    std::string ident;
+private:
+    float m_value;
 
 public:
-    IdentExpr(std::string ident) : ident(ident) {}
+    FloatLiteral(float value) : m_value(value) {};
+    void accept(ExprVisitor *v) { v->visit(this); }
+    std::string str() { return std::to_string(m_value); }
+};
 
-    std::ostream &print(std::ostream &os) { return os << this->ident; }
+class IdentExpr: public IExpr
+{
+private:
+    std::string m_ident;
+
+public:
+    IdentExpr(std::string ident) : m_ident(ident) {}
+    void accept(ExprVisitor *v) { v->visit(this); }
+    std::string str() { return m_ident; }
 };
 
 // (Expr)(Op)(Expr)
-class InfixExpr: public Expr
+class InfixExpr: public IExpr
 {
+private:
     Token Op;
-    std::unique_ptr<Expr> LHS, RHS;
+    std::unique_ptr<IExpr> LHS, RHS;
 
 public:
-    InfixExpr(Token Op, std::unique_ptr<Expr> LHS, std::unique_ptr<Expr> RHS) : Op(Op), LHS(std::move(LHS)), RHS(std::move(RHS)) {}
-
-    std::ostream &print(std::ostream &os) { return os << LHS << getType(Op.kind()) << RHS; }
+    InfixExpr(Token Op, std::unique_ptr<IExpr> LHS, std::unique_ptr<IExpr> RHS) : Op(Op), LHS(std::move(LHS)), RHS(std::move(RHS)) {}
+    void accept(ExprVisitor *v) { v->visit(this); }
+    std::string str();
 };
 
 // (Op)(Expr)
-class PrefixExpr: public Expr
+class PrefixExpr: public IExpr
 {
     Token Op;
-    std::unique_ptr<Expr> RHS;
+    std::unique_ptr<IExpr> RHS;
 
 public:
-    PrefixExpr(Token Op, std::unique_ptr<Expr> RHS) : Op(Op), RHS(std::move(RHS)) {}
+    PrefixExpr(Token Op, std::unique_ptr<IExpr> RHS) : Op(Op), RHS(std::move(RHS)) {}
 };
 
 // (Expr)(Op)
-class PostfixExpr: public Expr
+class PostfixExpr: public IExpr
 {
     Token Op;
-    std::unique_ptr<Expr> LHS;
+    std::unique_ptr<IExpr> LHS;
 
 public:
-    PostfixExpr(Token Op, std::unique_ptr<Expr> LHS) : Op(Op), LHS(std::move(LHS)) {}
+    PostfixExpr(Token Op, std::unique_ptr<IExpr> LHS) : Op(Op), LHS(std::move(LHS)) {}
 };
+
+}
 
 #endif

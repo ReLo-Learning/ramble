@@ -74,8 +74,9 @@ Token Lexer::m_tokenize()
 
         std::string buff;
         buff.push_back(c);
-        
 
+        std::cout << buff << std::endl;
+        
         switch (c)
         {
         case '\n':
@@ -156,12 +157,15 @@ std::vector<Token> Lexer::tokenize()
     while(true)
     {
         Token t = this->m_tokenize();
+        std::cout << t;
         this->tokens.push_back(t);
 
         if (t.kind() == eof)
             break;
         
     }
+
+    std::cout << "Created tokens" << std::endl;
 
     // For debugging purposes
     for (auto token : this->tokens)

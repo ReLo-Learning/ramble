@@ -11,15 +11,19 @@
 #include "expression.hpp"
 #include "statement.hpp"
 
+namespace AST
+{
 class Program
 {
     std::string file;
     std::string path;
     
-    std::vector<std::unique_ptr<Stmt>> stmts;
+    std::vector<std::unique_ptr<IStmt>> stmts;
 
 public:
     Program() {}
 };
+
+}
 
 #endif

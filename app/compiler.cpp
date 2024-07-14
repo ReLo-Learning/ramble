@@ -14,6 +14,8 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
+    std::cout << "Thank you for using Ramble" << std::endl;
+
     std::string contents;
     {
         std::stringstream contents_stream;
@@ -25,8 +27,11 @@ int main(int argc, char **argv)
     Lexer lexer(contents);
     std::vector<Token> tokens = lexer.tokenize();
 
+    std::cout << "Successfully Tokenized the file" << std::endl;
+
     Parser parser(tokens);
-    parser.parse();
+    std::unique_ptr<AST::Program> program = parser.parse();
+
     
     return 0;
 }
