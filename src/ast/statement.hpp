@@ -16,6 +16,7 @@ class IStmt
 public:
     virtual ~IStmt() = default;
     virtual void accept(class Visitor *) = 0;
+    virtual std::string str() = 0;
 };
 
 class VarDecl;
@@ -37,6 +38,7 @@ private:
 public:
     VarDecl(Token Ident, std::unique_ptr<IExpr> expr) : Ident(Ident), expr(std::move(expr)) {}
     void accept(Visitor *);
+    std::string str() { return "(Variable " + this->Ident.value + " " + this->expr->str() + ")"; };
 };
 
 class UninitVarDecl : public IStmt

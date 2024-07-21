@@ -24,6 +24,7 @@ public:
     virtual std::string str() = 0;
 };
 
+class EmptyExpr;
 class IntLiteral;
 class FloatLiteral;
 class IdentExpr;
@@ -33,12 +34,21 @@ class PostfixExpr;
 class ExprVisitor
 {
 public:
+    virtual void visit(EmptyExpr *expr);
     virtual void visit(IntLiteral *expr);
     virtual void visit(FloatLiteral *expr);
     virtual void visit(IdentExpr *expr);
     virtual void visit(InfixExpr *expr);
     virtual void visit(PrefixExpr *expr);
     virtual void visit(PostfixExpr *expr);
+};
+
+class EmptyExpr: public IExpr
+{
+public:
+    EmptyExpr() {};
+    void accept(ExprVisitor *v) { v->visit(this); };
+    std::string str() { return ""; };
 };
 
 class IntLiteral: public IExpr
@@ -84,7 +94,7 @@ private:
 public:
     InfixExpr(Token Op, std::unique_ptr<IExpr> LHS, std::unique_ptr<IExpr> RHS) : Op(Op), LHS(std::move(LHS)), RHS(std::move(RHS)) {}
     void accept(ExprVisitor *v) { v->visit(this); }
-    std::string str();
+    std::string str() { return "( " + LHS->str() + " " + getType(Op.kind()) + " " + RHS->str() + " )"; }
 };
 
 // (Op)(Expr)
