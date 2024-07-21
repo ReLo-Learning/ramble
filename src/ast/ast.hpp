@@ -21,7 +21,12 @@ class Program
     std::vector<std::unique_ptr<IStmt>> stmts;
 
 public:
-    Program() {}
+    Program();
+    ~Program() = default;
+
+    void addStatement(std::unique_ptr<IStmt>);
+
+    void print();
 };
 
 }
