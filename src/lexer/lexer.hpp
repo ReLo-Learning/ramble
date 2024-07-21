@@ -40,6 +40,8 @@ class Lexer
         Lexer(std::string str);
         
         std::vector<Token> tokenize();
+
+        void print();
 };
 
 #endif

@@ -87,25 +87,39 @@ Token Lexer::m_tokenize()
             break;
 
         case '+':
-            if (this->get() == '+')
+            if (this->peek() == '+')
             {
-                this->consume();
+                this->next();
                 return Token(INCR, this->line, this->col);
             }
             else
                 return Token(ADD, this->line, this->col);
             break;
+        
+        case '*':
+            if (this->peek() == '*')
+            {
+                this->next();
+                return Token(POW, this->line, this->col);
+            }
+            return Token(MUL, this->line, this->col);
+        
+        case '-':
+            if (this->peek() == '-')
+            {
+                this->next();
+                return Token(DECR, this->line, this->col);
+            }
+            return Token(SUB, this->line, this->col);
 
         case '=':
             if (this->get() == '=')
                 return Token(EEQ, this->line, this->col);
-            else
-                return Token(EQ, this->line, this->col);
-            break;
+            
+            return Token(EQ, this->line, this->col);
 
         case ';':
             return Token(SEMI, this->line, this->col);
-            break;
 
         default:
             if (isalpha(c) || c == '_')
@@ -156,7 +170,6 @@ std::vector<Token> Lexer::tokenize()
     while(true)
     {
         Token t = this->m_tokenize();
-        std::cout << t;
         this->tokens.push_back(t);
 
         if (t.kind() == eof)
@@ -164,13 +177,17 @@ std::vector<Token> Lexer::tokenize()
         
     }
 
-    std::cout << "Created tokens" << std::endl;
+    return this->tokens;
+}
 
-    // For debugging purposes
-    for (auto token : this->tokens)
+void Lexer::print()
+{
+    std::cout << "Tokens:" << "\n";
+
+    for(auto token : this->tokens)
     {
-        std::cout << token;
+        std::cout << token.str();
     }
 
-    return this->tokens;
+    std::cout << std::endl;
 }
