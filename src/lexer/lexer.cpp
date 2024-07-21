@@ -9,7 +9,7 @@ const std::string KEYWORDS[] = {
     "const",
     "unsigned",
     "extern",
-    "private"
+    "private",
 
     "end"
 };
@@ -126,16 +126,16 @@ Token Lexer::m_tokenize()
             }
             else if (isdigit(c))
             {
-                Kind type = INT;
+                Kind type = INT_LIT;
 
                 while (isdigit(this->get()) || this->get() == '.')
                 {
                     if (this->get() == '.')
                     {
-                        if (type == FLOAT)
+                        if (type == FLOAT_LIT)
                             std::cout << "Unimplemented ERROR" << std::endl;
 
-                        type = FLOAT;
+                        type = FLOAT_LIT;
                     }
 
                     buff.push_back(this->consume());
