@@ -24,9 +24,11 @@ int main(int argc, char **argv)
 
     Lexer lexer(contents);
     std::vector<Token> tokens = lexer.tokenize();
+    lexer.print();
 
     Parser parser(tokens);
     std::unique_ptr<AST::Program> program = parser.parse();
+    program->print();
 
     return 0;
 }
