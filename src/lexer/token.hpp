@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <sstream>
 
 #include "kind.hpp"
 
@@ -18,7 +19,6 @@ private:
     Kind type;
     int SubType;
 
-
 public:
     std::string value;
     
@@ -29,8 +29,8 @@ public:
     Kind kind();
     bool is(Kind kind);
     bool isAny(int len, const Kind kinds[]);
-
-    friend std::ostream &operator<<(std::ostream &os, const Token &token);
+    std::string kindStr();
+    std::string str();
 };
 
 #endif

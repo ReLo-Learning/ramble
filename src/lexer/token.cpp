@@ -34,16 +34,19 @@ bool Token::isAny(int len, const Kind kinds[])
     return ret_val;
 }
 
-std::ostream &operator<<(std::ostream &os, const Token& token)
+std::string Token::kindStr() { return getType(this->type); }
+std::string Token::str()
 {
-    os << std::left;
-    os << std::setw(10) << getType(token.type);
-    os << "(" << std::setw(5) << token.line << ":" << std::setw(5) << token.column << ")";
+    std::stringstream ss;
 
-    if (token.value.length() > 0)
-        os << "\t" << token.value;
-    
-    os << std::endl;
+    ss << std::left;
+    ss << std::setw(10) << getType(this->type);
+    ss << "(" << std::setw(5) << this->line << ":" << std::setw(5) << this->column << ")";
 
-    return os;
+    if (this->value.length() > 0)
+        ss << "\t" << this->value;
+
+    ss << "\n";
+
+    return ss.str();
 }
