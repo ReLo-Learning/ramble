@@ -74,8 +74,6 @@ Token Lexer::m_tokenize()
 
         std::string buff;
         buff.push_back(c);
-
-        std::cout << buff << std::endl;
         
         switch (c)
         {
@@ -115,6 +113,7 @@ Token Lexer::m_tokenize()
                 this->word(buff);
 
                 int offset = isKeyword(buff);
+
                 if (offset != -1)
                 {
                     return Token(Kind(keyword_begin + offset), line, col);
