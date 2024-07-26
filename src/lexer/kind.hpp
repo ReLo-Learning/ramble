@@ -15,7 +15,7 @@ enum Kind
     IDENT,
     INT_LIT,
     FLOAT_LIT,
-    CHAR_LIT,
+    RUNE_LIT,
     STRING_LIT,
     literal_end,
 
@@ -71,15 +71,12 @@ enum Kind
     RCURL,  // }
     LBRACK, // [
     RBRACK, // ]
+    PERIOD, // .
     ELLIPSIS, // ...
     operator_end,
 
     keyword_begin,
     LET,
-    INT,
-    FLOAT,
-    CHAR,
-    BOOL,
     CONST,
     UNSIGNED,
     EXTERN,
@@ -87,11 +84,11 @@ enum Kind
 
     SWITCH,
     CASE,
-    BREAK,
     DEFAULT,
     FOR,
     WHILE,
     CONTINUE,
+    BREAK,
     IF,
     ELIF,
     ELSE,
@@ -100,9 +97,12 @@ enum Kind
     TYPEDEF,
     UNION,
     ENUM,
+    INTERFACE,
 
     FUNC,
     RETURN,
+
+    IMPORT,
 
     keyword_end,
 };

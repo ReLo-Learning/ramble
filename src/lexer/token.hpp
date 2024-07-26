@@ -22,6 +22,7 @@ private:
 public:
     std::string value;
     
+    Token() = default;
     Token(Kind kind);
     Token(Kind kind, int line, int column);
     Token(Kind kind, std::string value, int line, int column);

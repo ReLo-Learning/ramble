@@ -2,14 +2,32 @@
 
 const std::string KEYWORDS[] = {
     "let",
-    "int",
-    "float",
-    "char",
-    "bool",
     "const",
     "unsigned",
     "extern",
     "private",
+
+    "switch",
+    "case",
+    "default",
+    "for",
+    "while",
+    "continue",
+    "break",
+    "if",
+    "elif",
+    "else",
+
+    "struct",
+    "typedef",
+    "union",
+    "enum",
+    "interface",
+
+    "func",
+    "return",
+
+    "import",
 
     "end"
 };
@@ -32,6 +50,15 @@ char Lexer::get() { return this->src[this->index]; }
 
 char Lexer::consume() { this->col++; return this->src[this->index++]; }
 
+bool Lexer::check_and_consume(char c)
+{
+    bool isNext = this->get() == c;
+    if (isNext)
+        this->next();
+
+    return isNext;
+}
+
 //Read until invalid character is found and break off
 //returns the found word
 void Lexer::word(std::string &buff)
@@ -40,6 +67,25 @@ void Lexer::word(std::string &buff)
     {
         buff.push_back(this->consume());
     }
+}
+
+void Lexer::handleInlineComment()
+{
+    while (this->get() != '\n' || this->index >= this->src.length())
+        this->next();
+}
+
+void Lexer::handleMultilineComment()
+{
+    while (this->get() != '*' && this->peek() != '/')
+    {
+        if (this->index >= this->src.length())
+            panic("Multiline comment is not closed");
+        
+        this->next();
+    }
+    this->next();
+    this->next();
 }
 
 int isKeyword(std::string const &w)
@@ -62,7 +108,7 @@ Token Lexer::m_tokenize()
     {
         if (this->index >= this->src.length())
         {
-            if(this->tokens.back().kind() != SEMI)
+            if(this->tokens.size() > 0 && this->tokens.back().kind() != SEMI)
                 this->tokens.push_back(Token(SEMI, this->line, this->col));
             return Token(eof, this->line, this->col);
         }
@@ -81,45 +127,173 @@ Token Lexer::m_tokenize()
             this->line++;
             this->col = 0;
 
-            if (this->tokens.back().kind() != SEMI)
+            if (this->tokens.size() > 0 && this->tokens.back().kind() != SEMI)
                 return Token(SEMI, line, col);
                 
             break;
 
         case '+':
-            if (this->peek() == '+')
-            {
-                this->next();
+            if (this->check_and_consume('+'))
                 return Token(INCR, this->line, this->col);
-            }
-            else
-                return Token(ADD, this->line, this->col);
-            break;
-        
-        case '*':
-            if (this->peek() == '*')
-            {
-                this->next();
-                return Token(POW, this->line, this->col);
-            }
-            return Token(MUL, this->line, this->col);
+            
+            if (this->check_and_consume('='))
+                return Token(PEQ, this->line, this->col);
+
+            return Token(ADD, this->line, this->col);
         
         case '-':
-            if (this->peek() == '-')
-            {
-                this->next();
+            if (this->check_and_consume('-'))
                 return Token(DECR, this->line, this->col);
-            }
+            
+            if (this->check_and_consume('='))
+                return Token(SEQ, this->line, this->col);
+            
+            if (this->check_and_consume('>'))
+                return Token(ARWR, this->line, this->col);
+            
             return Token(SUB, this->line, this->col);
+        
+        case '*':
+            if (this->check_and_consume('*'))
+                return Token(POW, this->line, this->col);
+            
+            if (this->check_and_consume('='))
+                return Token(MEQ, this->line, this->col);
+
+            return Token(MUL, this->line, this->col);
+        
+        case '/':
+            if (this->check_and_consume('/'))
+            {
+                this->handleInlineComment();
+                continue;
+            }
+            
+            if (this->check_and_consume('*'))
+            {
+                this->handleMultilineComment();
+                continue;
+            }
+
+            if (this->check_and_consume('='))
+                return Token(DEQ, this->line, this->col);
+
+            return Token(DIV, this->line, this->col);
+        
+        case '%':
+            if (this->check_and_consume('='))
+                return Token(REQ, this->line, this->col);
+
+            return Token(MOD, this->line, this->col);
 
         case '=':
-            if (this->get() == '=')
+            if (this->check_and_consume('='))
                 return Token(EEQ, this->line, this->col);
             
             return Token(EQ, this->line, this->col);
+        
+        case '|':
+            if (this->check_and_consume('|'))
+                return Token(OR, this->line, this->col);
+            
+            if (this->check_and_consume('='))
+                return Token(OEQ, this->line, this->col);
+
+            return Token(bOR, this->line, this->col);
+        
+        case '&':
+            if (this->check_and_consume('&'))
+                return Token(AND, this->line, this->col);
+
+            if (this->check_and_consume('='))
+                return Token(AEQ, this->line, this->col);
+
+            return Token(bAND, this->line, this->col);
+        
+        case '<':
+            if (this->check_and_consume('<'))
+                return Token(SHL, this->line, this->col);
+            
+            if (this->check_and_consume('='))
+                return Token(LEQ, this->line, this->col);
+
+            // Can lead to ambiguous code like 5<-1
+            if (this->check_and_consume('-'))
+                return Token(ARWL, this->line, this->col);
+
+            return Token(LSS, this->line, this->col);
+        
+        case '>':
+            if (this->check_and_consume('>'))
+                return Token(SHR, this->line, this->col);
+            
+            if (this->check_and_consume('='))
+                return Token(GEQ, this->line, this->col);
+
+            return Token(GRT, this->line, this->col);
+        
+        case '!':
+            if (this->check_and_consume('='))
+                return Token(NEQ, this->line, this->col);
+
+            return Token(NOT, this->line, this->col);
+        
+        case '^':
+            if (this->check_and_consume('='))
+                return Token(XEQ, this->line, this->col);
+
+            return Token(XOR, this->line, this->col);
+        
+        case '~':
+            return Token(bNOT, this->line, this->col);
+
+        case ':':
+            return Token(COLON, this->line, this->col);
+        
+        case ',':
+            return Token(COMMA, this->line, this->col);
 
         case ';':
             return Token(SEMI, this->line, this->col);
+
+        case '(':
+            return Token(LPAREN, this->line, this->col);
+        
+        case ')':
+            return Token(RPAREN, this->line, this->col);
+        
+        case '{':
+            return Token(LCURL, this->line, this->col);
+        
+        case '}':
+            return Token(RCURL, this->line, this->col);
+
+        case '[':
+            return Token(LBRACK, this->line, this->col);
+
+        case ']':
+            return Token(RBRACK, this->line, this->col);
+        
+        case '.':
+            return Token(PERIOD, this->line, this->col);
+        
+        case '\'':
+            while (this->get() != '\'')
+            {
+                buff.push_back(this->consume());
+            }
+            buff.push_back(this->consume());
+
+            return Token(RUNE_LIT, buff, this->line, this->col);
+        
+        case '"':
+            while (this->get() != '"')
+            {
+                buff.push_back(this->consume());
+            }
+            buff.push_back(this->consume());
+
+            return Token(STRING_LIT, buff, this->line, this->col);
 
         default:
             if (isalpha(c) || c == '_')

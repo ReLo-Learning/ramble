@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "../errors/error.hpp"
+#include "../utils/panic.hpp"
 #include "token.hpp"
 
 struct Position
@@ -32,7 +33,12 @@ class Lexer
         char get();
         char consume();
 
+        bool check_and_consume(char c);
+
         void word(std::string &buff);
+
+        void handleInlineComment();
+        void handleMultilineComment();
 
         Token m_tokenize();
 
