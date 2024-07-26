@@ -1,0 +1,2 @@
+let y = "Hello, World";
+let x: int = 5;
