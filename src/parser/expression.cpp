@@ -37,6 +37,14 @@ std::unique_ptr<AST::IExpr> Parser::ParsePrefixExpression()
         return this->ParseIntLiteral();
     case Kind::FLOAT_LIT:
         return this->ParseFloatLiteral();
+    case Kind::RUNE_LIT:
+        // return this->ParseRuneLiteral();
+        break;
+    case Kind::STRING_LIT:
+        return this->ParseStringLiteral();
+    case Kind::IDENT:
+        // return this->HandleIdent();
+        break;
     
     default:
         return std::make_unique<AST::EmptyExpr>();
@@ -60,3 +68,5 @@ std::unique_ptr<AST::IExpr> Parser::ParsePostfixExpression(std::unique_ptr<AST::
 std::unique_ptr<AST::IExpr> Parser::ParseIntLiteral() { return std::make_unique<AST::IntLiteral>(std::stoi(this->consume().value)); }
 
 std::unique_ptr<AST::IExpr> Parser::ParseFloatLiteral() { return std::make_unique<AST::FloatLiteral>(std::stof(this->consume().value)); }
+
+std::unique_ptr<AST::IExpr> Parser::ParseStringLiteral() { return std::make_unique<AST::StringLiteral>(this->consume().value); }

@@ -35,6 +35,7 @@ class Parser
         bool isNot(Kind kind);
         bool peekIsNot(Kind kind);
 
+        std::unique_ptr<AST::IStmt> ParseStatement();
         std::unique_ptr<AST::IExpr> ParseExpression(int precedence = 0);
 
         std::unique_ptr<AST::IExpr> ParsePrefixExpression();
@@ -43,8 +44,13 @@ class Parser
 
         std::unique_ptr<AST::IExpr> ParseIntLiteral();
         std::unique_ptr<AST::IExpr> ParseFloatLiteral();
+        // std::unique_ptr<AST::IExpr> ParseRuneLiteral();
+        std::unique_ptr<AST::IExpr> ParseStringLiteral();
+        // std::unique_ptr<AST::IExpr> HandleIdent();
 
         std::unique_ptr<AST::IStmt> ParseVarDecl();
+        std::unique_ptr<AST::IStmt> ParseFuncDecl();
+        std::unique_ptr<AST::IStmt> ParseBlockStmt();
 
     public:
         Parser(std::vector<Token> tokens);
