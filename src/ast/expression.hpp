@@ -27,6 +27,8 @@ public:
 class EmptyExpr;
 class IntLiteral;
 class FloatLiteral;
+class RuneLiteral;
+class StringLiteral;
 class IdentExpr;
 class InfixExpr;
 class PrefixExpr;
@@ -37,6 +39,8 @@ public:
     virtual void visit(EmptyExpr *expr);
     virtual void visit(IntLiteral *expr);
     virtual void visit(FloatLiteral *expr);
+    virtual void visit(RuneLiteral *expr);
+    virtual void visit(StringLiteral *expr);
     virtual void visit(IdentExpr *expr);
     virtual void visit(InfixExpr *expr);
     virtual void visit(PrefixExpr *expr);
@@ -71,6 +75,28 @@ public:
     FloatLiteral(float value) : m_value(value) {};
     void accept(ExprVisitor *v) { v->visit(this); }
     std::string str() { return std::to_string(m_value); }
+};
+
+class RuneLiteral: public IExpr
+{
+private:
+    uint32_t m_value;
+
+public:
+    RuneLiteral(uint32_t value) : m_value(value) {};
+    void accept(ExprVisitor *v) { v->visit(this); }
+    std::string str() { return std::to_string(m_value); }
+};
+
+class StringLiteral : public IExpr
+{
+private:
+    std::string m_value;
+
+public:
+    StringLiteral(std::string value) : m_value(value) {};
+    void accept(ExprVisitor *v) { v->visit(this); }
+    std::string str() { return m_value; }
 };
 
 class IdentExpr: public IExpr
