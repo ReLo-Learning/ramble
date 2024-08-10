@@ -1,6 +1,6 @@
 #include "../parser.hpp"
 
-// [private] func ident({Parameters}) [-> {Types}] BLOCK STATEMENT
+// [private] func ident({Parameters}) [-> ({Types})] BLOCK STATEMENT
 std::unique_ptr<AST::IStmt> Parser::ParseFuncDecl()
 {
     Token start = this->consume();
@@ -24,10 +24,15 @@ std::unique_ptr<AST::IStmt> Parser::ParseFuncDecl()
     
     this->next();
 
-    if (this->is(ARWL))
+    if (this->is(ARWR))
     {
-        // TODO: Parse return type here
-        panic("Have not implemented return type parsing");
+        this->next();
+
+        int retType = Type::isBuiltinType(this->consume());
+        if (!retType)
+            panic("Have not implemented return type parsing");
+        
+        func->addRetType(std::make_unique<Type::Builtin>( Type::Basic(retType) ));
     }
 
     if (this->is(SEMI))
