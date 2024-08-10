@@ -46,13 +46,15 @@ class Parser
         std::unique_ptr<AST::IExpr> ParseFloatLiteral();
         // std::unique_ptr<AST::IExpr> ParseRuneLiteral();
         std::unique_ptr<AST::IExpr> ParseStringLiteral();
-        // std::unique_ptr<AST::IExpr> HandleIdent();
+        std::unique_ptr<AST::IExpr> HandleIdent();
 
         std::unique_ptr<AST::IStmt> ParseVarDecl();
         std::unique_ptr<AST::IStmt> ParseFuncDecl();
         std::unique_ptr<AST::IStmt> ParseBlockStmt();
+        std::unique_ptr<AST::IStmt> ParseExprStmt();
+        std::unique_ptr<AST::IStmt> ParseRetStmt();
 
-    public:
+        public: 
         Parser(std::vector<Token> tokens);
 
         std::unique_ptr<AST::Program> parse();

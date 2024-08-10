@@ -43,7 +43,7 @@ std::unique_ptr<AST::IExpr> Parser::ParsePrefixExpression()
     case Kind::STRING_LIT:
         return this->ParseStringLiteral();
     case Kind::IDENT:
-        // return this->HandleIdent();
+        return this->HandleIdent();
         break;
     
     default:
