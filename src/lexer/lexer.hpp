@@ -3,6 +3,7 @@
 #ifndef LEXER_HPP
 #define LEXER_HPP
 
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -20,13 +21,12 @@ struct Position
 class Lexer
 {
     private:
-        std::string file;
+        std::string m_file;
         unsigned int line;
         unsigned int col;
-        unsigned int index;
 
         std::vector<Token> tokens;
-        std::string src;
+        std::ifstream src;
 
         char peek();
         char next();
@@ -43,7 +43,7 @@ class Lexer
         Token m_tokenize();
 
     public:
-        Lexer(std::string str);
+        Lexer(std::string file);
         
         std::vector<Token> tokenize();
 

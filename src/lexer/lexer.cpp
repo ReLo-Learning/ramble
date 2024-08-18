@@ -32,23 +32,31 @@ const std::string KEYWORDS[] = {
     "end"
 };
 
-Lexer::Lexer(std::string str)
+Lexer::Lexer(std::string file)
 {
+    this->m_file = file;
     this->line = 0;
     this->col = 0;
-    this->index = 0;
-    this->src = str; 
+    this->src = std::ifstream(file);
 }
 
 //See the next character
-char Lexer::peek(){ return this->src[this->index + 1]; }
+char Lexer::peek(){ return this->src.peek(); }
 
 //Get the next character
-char Lexer::next(){ this->col++; return this->src[++this->index]; }
+char Lexer::next(){ 
+    this->src.get();
+    this->col++; 
+    return this->src.get(); 
+}
 
-char Lexer::get() { return this->src[this->index]; }
+char Lexer::get() { 
+    char c = this->src.get();
+    this->src.unget();
+    return c; 
+}
 
-char Lexer::consume() { this->col++; return this->src[this->index++]; }
+char Lexer::consume() { this->col++; return this->src.get(); }
 
 bool Lexer::check_and_consume(char c)
 {
@@ -71,7 +79,7 @@ void Lexer::word(std::string &buff)
 
 void Lexer::handleInlineComment()
 {
-    while (this->get() != '\n' || this->index >= this->src.length())
+    while (this->get() != '\n' || this->src.eof())
         this->next();
 }
 
@@ -79,7 +87,7 @@ void Lexer::handleMultilineComment()
 {
     while (this->get() != '*' && this->peek() != '/')
     {
-        if (this->index >= this->src.length())
+        if (this->src.eof())
             panic("Multiline comment is not closed");
         
         this->next();
@@ -104,15 +112,8 @@ int isIdent(std::string const &w) { return (isalpha(w[0]) || w[0] == '_'); }
 
 Token Lexer::m_tokenize()
 {
-    for(;;)
-    {
-        if (this->index >= this->src.length())
-        {
-            if(this->tokens.size() > 0 && this->tokens.back().kind() != SEMI)
-                this->tokens.push_back(Token(SEMI, this->line, this->col));
-            return Token(eof, this->line, this->col);
-        }
-        
+    while(!this->src.eof())
+    {   
         int line = this->line;
         int col = this->col;
         
@@ -336,6 +337,10 @@ Token Lexer::m_tokenize()
             break;
         }
     }
+
+    if (this->tokens.size() > 0 && this->tokens.back().kind() != SEMI)
+        this->tokens.push_back(Token(SEMI, this->line, this->col));
+    return Token(eof, this->line, this->col);
 }
 
 std::vector<Token> Lexer::tokenize()
