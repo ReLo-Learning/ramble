@@ -16,6 +16,7 @@ private:
 public:
     Pointer(std::unique_ptr<IType> underlying) : m_underlying(std::move(underlying)) {};
     std::string str();
+    std::string codegen();
 
 };
 

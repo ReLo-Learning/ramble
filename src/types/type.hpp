@@ -5,5 +5,6 @@
 
 #include "IType.hpp"
 #include "builtin.hpp"
+#include "pointer.hpp"
 
 #endif

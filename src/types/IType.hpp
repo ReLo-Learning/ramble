@@ -14,6 +14,7 @@ namespace Type
         IType() = default;
         virtual ~IType() = default;
         virtual std::string str() = 0;
+        virtual std::string codegen() = 0;
     };
 }
 

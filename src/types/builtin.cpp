@@ -30,6 +30,31 @@ namespace Type
         "rune"
     };
 
+    const std::string builtin_codegen[] = {
+        "INVALID",
+        "u8",
+
+        "i32",
+        "i8",
+        "i16",
+        "i32",
+        "i64",
+
+        "i32",
+        "i8",
+        "i16",
+        "i32",
+        "i64",
+
+        "f32",
+        "f64",
+
+        "c64",
+        "c128",
+
+        "i8*",
+    };
+
     enum Basic {
         INVALID,
 
@@ -65,7 +90,14 @@ namespace Type
         int idx = 1;   
         for (auto type : builtin)
         {
-            if (t.value == type)
+            if (t.value.compare("char"))
+                return Basic::Char;
+            else if (t.value.compare("rune"))
+                return Basic::Rune;
+            else if (t.value.compare("byte"))
+                return Basic::Byte;
+
+            if (t.value.compare(type))
                 return Basic(idx);
             
             idx += 1;
@@ -74,11 +106,14 @@ namespace Type
         return INVALID;
     }
 
+    std::string Void::str() { return "void"; }
+
     Builtin::Builtin(Basic type)
     {
         this->m_type = type;
-        this->m_value = builtin[type];
+        this->m_value = builtin[type-1];
     }
 
     std::string Builtin::str() { return this->m_value; }
+    std::string Builtin::codegen() { return builtin_codegen[this->m_type]; }
 }

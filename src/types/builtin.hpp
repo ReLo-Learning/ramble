@@ -13,6 +13,14 @@ enum Basic;
 
 int isBuiltinType(Token t);
 
+class Void : public IType
+{
+public:
+    Void() = default;
+    std::string str();
+    std::string codegen() { return ""; }
+};
+
 class Builtin : public IType
 {
 private:
@@ -22,6 +30,7 @@ private:
 public:
     Builtin(Basic type);
     std::string str();
+    std::string codegen();
 };
 
 }
