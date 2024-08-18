@@ -93,11 +93,40 @@ std::unique_ptr<AST::IStmt> Parser::ParseStatement()
     case RETURN:
         return this->ParseRetStmt();
 
+    case EXTERN:
+        return this->ParseExternStmt();
+
     default:
         std::cout << this->get().str() << "\n";
         panic("Illegal Token");
         this->next();
         break;
+    }
+}
+
+std::unique_ptr<Type::IType> Parser::ParseType()
+{
+    switch (this->get().kind())
+    {
+        case MUL: {
+            this->next();
+            return std::make_unique<Type::Pointer>(this->ParseType());
+        }
+        
+        case IDENT: {
+            int builtin = Type::isBuiltinType(this->get().kind());
+            if (!builtin)
+                panic("Unhandled Type");
+            
+            this->next();
+
+            return std::make_unique<Type::Builtin>( Type::Basic(builtin) );
+        }
+        
+        default:
+            std::cout << this->get().str();
+            panic("Unhandled Type");
+            break;
     }
 }
 

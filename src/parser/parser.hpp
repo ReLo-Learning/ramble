@@ -35,6 +35,8 @@ class Parser
         bool isNot(Kind kind);
         bool peekIsNot(Kind kind);
 
+        std::unique_ptr<Type::IType> ParseType();
+
         std::unique_ptr<AST::IStmt> ParseStatement();
         std::unique_ptr<AST::IExpr> ParseExpression(int precedence = 0);
 
@@ -53,6 +55,7 @@ class Parser
         std::unique_ptr<AST::IStmt> ParseBlockStmt();
         std::unique_ptr<AST::IStmt> ParseExprStmt();
         std::unique_ptr<AST::IStmt> ParseRetStmt();
+        std::unique_ptr<AST::IStmt> ParseExternStmt();
 
         public: 
         Parser(std::vector<Token> tokens);

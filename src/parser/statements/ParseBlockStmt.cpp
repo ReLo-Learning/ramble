@@ -14,6 +14,7 @@ std::unique_ptr<AST::IStmt> Parser::ParseBlockStmt()
             panic("Block statement is not closed");
         
         block->addStmt(this->ParseStatement());
+
     }
 
     this->next();

@@ -47,7 +47,6 @@ std::unique_ptr<AST::IExpr> Parser::ParsePrefixExpression()
         break;
     
     default:
-        return std::make_unique<AST::EmptyExpr>();
         panic("Unimplemented Primary Expression!");
         break;
     }

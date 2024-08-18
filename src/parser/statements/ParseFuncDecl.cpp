@@ -16,8 +16,10 @@ std::unique_ptr<AST::IStmt> Parser::ParseFuncDecl()
         panic("Did not find (");
     
     this->next();
-
+    
     // TODO: Parse parameters here
+    if (this->isNot(RPAREN))
+        func->addParam( std::make_unique<AST::FuncParams>( this->ParseType() ));
 
     if (!this->expect(RPAREN))
         panic("Did not find )");
@@ -28,24 +30,21 @@ std::unique_ptr<AST::IStmt> Parser::ParseFuncDecl()
     {
         this->next();
 
-        int retType = Type::isBuiltinType(this->consume());
-        if (!retType)
-            panic("Have not implemented return type parsing");
-        
-        func->addRetType(std::make_unique<Type::Builtin>( Type::Basic(retType) ));
+        func->addRetType(this->ParseType());
     }
+    else
+        func->addRetType(std::make_unique<Type::Void>());
 
     if (this->is(SEMI))
         this->next();
     
-    // TODO: Parse Block statement
     if (!this->expect(LCURL))
-        panic("Function does not have body");
+        return func;
 
     func->addBody(this->ParseBlockStmt());
 
     if (this->is(SEMI))
         this->next();
-
+    
     return func;
 }
