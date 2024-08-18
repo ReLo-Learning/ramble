@@ -27,6 +27,8 @@ public:
 
     void addStatement(std::unique_ptr<IStmt>);
 
+    std::vector<std::unique_ptr<IStmt>> statements();
+
     void print();
 };
 

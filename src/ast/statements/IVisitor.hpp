@@ -13,17 +13,19 @@ namespace AST
     class BlockStmt;
     class ExprStmt;
     class RetStmt;
+    class ExternStmt;
 
     class IVisitor
     {
     public:
         IVisitor() = default;
-        virtual ~IVisitor() = default;
+        ~IVisitor() = default;
         virtual void visit(VarDecl *) = 0;
         virtual void visit(FuncDecl *) = 0;
         virtual void visit(BlockStmt *) = 0;
         virtual void visit(ExprStmt *) = 0;
         virtual void visit(RetStmt *) = 0;
+        virtual void visit(ExternStmt *) = 0;
     };
 }
 

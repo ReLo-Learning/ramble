@@ -11,6 +11,7 @@
 #include "statements/BlockStmt.hpp"
 #include "statements/ExprStmt.hpp"
 #include "statements/RetStmt.hpp"
+#include "statements/ExternStmt.hpp"
 
 // #include <memory>
 
