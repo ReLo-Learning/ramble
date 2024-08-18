@@ -1,0 +1,6 @@
+extern func puts(*char) -> int
+
+func main()
+{
+    puts("I love you, Keerthu")
+}
