@@ -4,7 +4,6 @@
 #define STATEMENT_HPP
 
 #include "statements/IStmt.hpp"
-#include "statements/IVisitor.hpp"
 
 #include "statements/VarDecl.hpp"
 #include "statements/FuncDecl.hpp"

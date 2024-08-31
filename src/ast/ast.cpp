@@ -9,9 +9,12 @@ void Program::addStatement(std::unique_ptr<IStmt> statement)
     this->stmts.push_back(std::move(statement));
 }
 
-std::vector<std::unique_ptr<IStmt>> Program::statements()
+void Program::walk(IVisitor *v)
 {
-    return std::move(this->stmts);
+    for (auto const& statement : this->stmts)
+    {
+        statement->accept(v);
+    }
 }
 
 void Program::print()

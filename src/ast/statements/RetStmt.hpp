@@ -3,7 +3,7 @@
 #ifndef RETSTMT_HPP
 #define RETSTMT_HPP
 
-#include "IVisitor.hpp"
+#include "../IVisitor.hpp"
 
 namespace AST
 {

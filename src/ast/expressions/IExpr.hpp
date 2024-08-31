@@ -15,14 +15,14 @@
 
 namespace AST
 {
-    class ExprVisitor;
+    class IVisitor;
 
     // Base class
     class IExpr
     {
     public:
         virtual ~IExpr() = default;
-        virtual void accept(ExprVisitor *v) = 0;
+        virtual void accept(IVisitor *) = 0;
         virtual std::string str() = 0;
     };
 }

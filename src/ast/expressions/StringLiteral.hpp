@@ -3,7 +3,7 @@
 #ifndef STRINGLITERAL_HPP
 #define STRINGLITERAL_HPP
 
-#include "ExprVisitor.hpp"
+#include "../IVisitor.hpp"
 
 namespace AST
 {
@@ -14,7 +14,7 @@ namespace AST
 
     public:
         StringLiteral(std::string value) : m_value(value.c_str()) {};
-        void accept(ExprVisitor *v) { v->visit(this); }
+        void accept(IVisitor *v);
         std::string str() { return m_value; }
     };
 }

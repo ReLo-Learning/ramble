@@ -14,6 +14,6 @@ add_subdirectory(src)
 add_executable(ramble ${CMAKE_SOURCE_DIR}/app/compiler.cpp)
 
 target_link_libraries(
-    ramble PUBLIC ErrorLib LexerLib ASTLib ParserLib Utils Types Codegen
+    ramble PUBLIC ErrorLib LexerLib ASTLib ParserLib Utils Types
 )
 

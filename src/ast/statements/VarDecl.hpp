@@ -3,7 +3,7 @@
 #ifndef VARDECL_HPP
 #define VARDECL_HPP
 
-#include "IVisitor.hpp"
+#include "../IVisitor.hpp"
 
 namespace AST{
     /*

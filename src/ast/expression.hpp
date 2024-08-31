@@ -4,7 +4,7 @@
 #define EXPRESSION_HPP
 
 #include "./expressions/IExpr.hpp"
-#include "./expressions/ExprVisitor.hpp"
+#include "IVisitor.hpp"
 
 #include "./expressions/CallExpr.hpp"
 #include "./expressions/FloatLiteral.hpp"

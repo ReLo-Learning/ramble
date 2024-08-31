@@ -5,7 +5,6 @@
 #include "../src/lexer/lexer.hpp"
 #include "../src/errors/error.hpp"
 #include "../src/parser/parser.hpp"
-#include "../src/codegen/codegen.hpp"
 
 int main(int argc, char **argv)
 {
@@ -31,7 +30,7 @@ int main(int argc, char **argv)
     std::unique_ptr<AST::Program> program = parser.parse();
     program->print();
 
-    Codegen::generate(std::move(program));
+    // Codegen::generate(std::move(program));
 
     return 0;
 }

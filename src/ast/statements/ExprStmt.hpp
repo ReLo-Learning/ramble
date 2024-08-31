@@ -3,7 +3,7 @@
 #ifndef EXPRSTMT_HPP
 #define EXPRSTMT_HPP
 
-#include "IVisitor.hpp"
+#include "../IVisitor.hpp"
 #include "../expression.hpp"
 
 namespace AST

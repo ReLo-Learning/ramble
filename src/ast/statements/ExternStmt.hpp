@@ -3,7 +3,7 @@
 #ifndef EXTERNSTMT_HPP
 #define EXTERNSTMT_HPP
 
-#include "IVisitor.hpp"
+#include "../IVisitor.hpp"
 
 namespace AST
 {

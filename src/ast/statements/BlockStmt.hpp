@@ -3,7 +3,7 @@
 #ifndef BLOCKSTMT_HPP
 #define BLOCKSTMT_HPP
 
-#include "IVisitor.hpp"
+#include "../IVisitor.hpp"
 
 namespace AST
 {

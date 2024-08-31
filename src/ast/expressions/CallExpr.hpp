@@ -3,7 +3,7 @@
 #ifndef CALLEXPR_HPP
 #define CALLEXPR_HPP
 
-#include "ExprVisitor.hpp"
+#include "../IVisitor.hpp"
 
 namespace AST
 {
@@ -16,7 +16,7 @@ namespace AST
 
     public:
         CallExpr(std::string func) : m_func(func) {}
-        void accept(ExprVisitor *v) { v->visit(this); }
+        void accept(IVisitor *v);
         void addArg(std::unique_ptr<IExpr> arg) { this->m_args.push_back(std::move(arg)); }
         std::string str() { return this->m_func + "()"; }
     };

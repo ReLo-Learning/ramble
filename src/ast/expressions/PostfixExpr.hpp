@@ -3,7 +3,7 @@
 #ifndef POSTFIX_HPP
 #define POSTFIX_HPP
 
-#include "ExprVisitor.hpp"
+#include "../IVisitor.hpp"
 
 namespace AST
 {
@@ -15,6 +15,8 @@ namespace AST
 
     public:
         PostfixExpr(Token Op, std::unique_ptr<IExpr> LHS) : Op(Op), LHS(std::move(LHS)) {}
+        void accept(IVisitor *v);
+        std::string str() { return LHS->str() + Op.kindStr(); }
     };
 }
 

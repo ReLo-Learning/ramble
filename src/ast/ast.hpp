@@ -8,8 +8,8 @@
 #include <memory>
 #include <iostream>
 
+#include "IVisitor.hpp"
 #include "expression.hpp"
-
 #include "statement.hpp"
 
 namespace AST
@@ -27,7 +27,7 @@ public:
 
     void addStatement(std::unique_ptr<IStmt>);
 
-    std::vector<std::unique_ptr<IStmt>> statements();
+    void walk(IVisitor *);
 
     void print();
 };

@@ -3,7 +3,7 @@
 #ifndef PREFIXEXPR_HPP
 #define PREFIXEXPR_HPP
 
-#include "ExprVisitor.hpp"
+#include "../IVisitor.hpp"
 
 namespace AST
 {
@@ -15,6 +15,8 @@ namespace AST
 
     public:
         PrefixExpr(Token Op, std::unique_ptr<IExpr> RHS) : Op(Op), RHS(std::move(RHS)) {}
+        void accept(IVisitor *v);
+        std::string str() { return Op.kindStr() + RHS->str(); }
     };
 } 
 

@@ -3,7 +3,7 @@
 #ifndef FUNCDECL_HPP
 #define FUNCDECL_HPP
 
-#include "IVisitor.hpp"
+#include "../IVisitor.hpp"
 #include "BlockStmt.hpp"
 
 namespace AST
