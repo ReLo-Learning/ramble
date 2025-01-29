@@ -22,6 +22,8 @@ class Parser
         std::map<Kind, int> infixOps;
         std::map<Kind, int> postfixOps;
 
+        void panic(std::string message);
+
         Token get();
         Token peek();
         Token consume();

@@ -1,5 +1,28 @@
 #include "parser.hpp"
 
+void Parser::panic(std::string msg) 
+{
+    Token currToken = this->get();
+
+    int col = currToken.getColumn() + 1;
+    int line = currToken.getLine() + 1;
+
+    // Change terminal text color to red
+    std::cout << "\033[31m";
+
+    // Print debug information
+    std::cout << "PARSER ERROR\n";
+    
+    std::cout << "   " << "Line: " << line << ":" << col << "\n";
+
+    // Print the actual error message
+    std::cout << "   " << msg << "\n";
+
+    // Change terminal text color back to default
+    std::cout << "\033[0m";
+    exit(1);
+}
+
 Parser::Parser(std::vector<Token> tokens) : m_tokens(std::move(tokens))
 {
     this->m_index = 0;
@@ -114,7 +137,7 @@ std::unique_ptr<Type::IType> Parser::ParseType()
         }
         
         case IDENT: {
-            int builtin = Type::isBuiltinType(this->get().kind());
+            int builtin = Type::isBuiltinType(this->get());
             if (!builtin)
                 panic("Unhandled Type");
             
