@@ -6,4 +6,6 @@
 #include "../HVisitor.hpp"
 #include "HStmt.hpp"
 
+#include "VarDecl.hpp"
+
 #endif

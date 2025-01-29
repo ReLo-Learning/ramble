@@ -57,7 +57,7 @@ public:
     void visit(AST::CallExpr *);
 };
 
-std::unique_ptr<IR> Lower(std::unique_ptr<AST::Program> &program);
+std::unique_ptr<IR> Lower(AST::Program* program);
 }
 
 

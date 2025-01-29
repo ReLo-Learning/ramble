@@ -2,7 +2,11 @@
 
 namespace HIR
 {
-void Walker::visit(AST::VarDecl *ast) {};
+void Walker::visit(AST::VarDecl *ast) 
+{
+    VarDecl decl = VarDecl();
+    std::cout << "Variable Declaration\n"; 
+};
 void Walker::visit(AST::FuncDecl *ast) {};
 void Walker::visit(AST::BlockStmt *ast) {};
 void Walker::visit(AST::ExprStmt *ast) {};

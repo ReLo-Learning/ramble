@@ -9,11 +9,14 @@
 namespace HIR
 {
 
+class VarDecl;
+
 class HVisitor
 {
 public:
     ~HVisitor() = default;
     
+    virtual void visit(VarDecl *) = 0;
 };
 
 

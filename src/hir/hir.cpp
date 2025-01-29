@@ -3,7 +3,7 @@
 namespace HIR
 {
 
-std::unique_ptr<IR> Lower(std::unique_ptr<AST::Program>& program)
+std::unique_ptr<IR> Lower(AST::Program* program)
 {
     // Create AST Walker
     Walker walker;
