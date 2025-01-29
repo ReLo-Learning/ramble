@@ -1,5 +1,9 @@
+// Copyright 2025 Logan Reuter. All rights reserved.
+
+// Kind.cpp defines map of all kinds to corresponding string and helper functions
 #include "kind.hpp"
 
+// Map each kind to a string for debugging purposes
 std::map<Kind, std::string> TokenKind = {
     {ILLEGAL, "ILLEGAL"},
     {eof, "EOF"},
@@ -92,6 +96,7 @@ std::map<Kind, std::string> TokenKind = {
     {IMPORT, "IMPORT"},
 };
 
+// Helper function that returns a string from a given Kind
 std::string getType(Kind kind)
 {
     return TokenKind[kind];

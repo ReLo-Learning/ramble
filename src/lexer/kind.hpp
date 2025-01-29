@@ -1,3 +1,6 @@
+// Copyright 2025 Logan Reuter. All rights reserved.
+
+// Kind.hpp defines the different types of tokens used in Ramble
 #pragma once
 
 #ifndef KIND_HPP
@@ -6,17 +9,18 @@
 #include <map>
 #include <string>
 
+// List of kinds
 enum Kind
 {
     ILLEGAL,
     eof,
 
     literal_begin,
-    IDENT,
-    INT_LIT,
-    FLOAT_LIT,
-    RUNE_LIT,
-    STRING_LIT,
+    IDENT,          // [a-zA-Z][a-zA-Z0-9]+
+    INT_LIT,        // xxx
+    FLOAT_LIT,      // x.xx
+    RUNE_LIT,       // 'A'
+    STRING_LIT,     // "This is a string"
     literal_end,
 
     operator_begin,

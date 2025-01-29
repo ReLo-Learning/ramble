@@ -50,3 +50,9 @@ std::string Token::str()
 
     return ss.str();
 }
+
+// function to get the line number of token
+int Token::getLine() { return this->line; }
+
+// function to get the column number of token
+int Token::getColumn() { return this->column; }

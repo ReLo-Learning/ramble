@@ -32,6 +32,8 @@ public:
     bool isAny(int len, const Kind kinds[]);
     std::string kindStr();
     std::string str();
+    int getLine();
+    int getColumn();
 };
 
 #endif
