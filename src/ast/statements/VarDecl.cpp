@@ -5,7 +5,18 @@ namespace AST
     void VarDecl::accept(IVisitor *v) { v->visit(this); }
 
     std::string VarDecl::str() 
-    { 
-        return "{Variable: " + this->Ident.value + " " + this->expr->str() + "}"; 
+    {
+        std::stringstream ss;
+        ss << "{\n";
+
+        ss << "   " << std::left << std::setw(10) << "Variable: " << this->Ident.value << "\n";
+
+        ss << "   " << std::left << std::setw(10) << "Type: " << this->Type->str() << "\n";
+
+        ss << "   " << std::left << std::setw(10) << "Value: " << this->expr->str() << "\n";
+
+        ss << "}\n";
+
+        return ss.str(); 
     };
 }
