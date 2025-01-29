@@ -87,23 +87,22 @@ namespace Type
 
     int isBuiltinType(Token t)
     {   
+        int ret_val = INVALID;
+
         int idx = 1;   
         for (auto type : builtin)
         {
-            if (t.value.compare("char"))
-                return Basic::Char;
-            else if (t.value.compare("rune"))
-                return Basic::Rune;
-            else if (t.value.compare("byte"))
-                return Basic::Byte;
-
-            if (t.value.compare(type))
-                return Basic(idx);
+            
+            if (!t.value.compare(type))
+            {
+                ret_val = Basic(idx);
+                break;
+            }
             
             idx += 1;
         }
 
-        return INVALID;
+        return ret_val;
     }
 
     std::string Void::str() { return "void"; }
