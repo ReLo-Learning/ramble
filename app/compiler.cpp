@@ -5,6 +5,7 @@
 #include "../src/lexer/lexer.hpp"
 #include "../src/errors/error.hpp"
 #include "../src/parser/parser.hpp"
+#include "../src/hir/hir.hpp"
 
 int main(int argc, char **argv)
 {
@@ -30,6 +31,7 @@ int main(int argc, char **argv)
     std::unique_ptr<AST::Program> program = parser.parse();
     program->print();
 
+    HIR::Lower(&*program);
     // Codegen::generate(std::move(program));
 
     return 0;
