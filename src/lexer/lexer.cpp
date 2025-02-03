@@ -132,6 +132,12 @@ Token Lexer::m_tokenize()
                 return Token(SEMI, line, col);
                 
             break;
+        
+        case '\t':
+            continue;
+        
+        case ' ':
+            continue;
 
         case '+':
             if (this->check_and_consume('+'))
@@ -295,6 +301,9 @@ Token Lexer::m_tokenize()
             buff.push_back(this->consume());
 
             return Token(STRING_LIT, buff, this->line, this->col);
+        
+        case EOF:
+            return Token(eof, this->line, this->col);
 
         default:
             if (isalpha(c) || c == '_')
@@ -333,6 +342,7 @@ Token Lexer::m_tokenize()
             }
             else
             {
+                std::cout << (int)c << " Uncaught\n";
             }
             break;
         }
