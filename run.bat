@@ -3,4 +3,4 @@
 cmake -S . -B build
 cmake --build build
 
-build\Debug\ramble.exe C:\Users\lreut\Desktop\Programs\Ramble\examples\variables.rmbl
+build\Debug\ramble.exe .\examples\variables.rmbl
