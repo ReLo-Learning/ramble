@@ -1,0 +1,7 @@
+Variables:
+   let varName: type;
+   let varName: type = value;
+   const varName: type = value;
+
+Functions:
+   func FuncName(param: type) -> return_type {}
