@@ -4,8 +4,7 @@ namespace HIR
 {
 void Walker::visit(AST::VarDecl *ast) 
 {
-    VarDecl decl = VarDecl();
-    std::cout << "Variable Declaration\n"; 
+    this->ir->Globals.push_back(std::make_unique<VarDecl>(ast->Ident, std::move(ast->Type), std::move(ast->expr)));
 };
 void Walker::visit(AST::FuncDecl *ast) {};
 void Walker::visit(AST::BlockStmt *ast) {};

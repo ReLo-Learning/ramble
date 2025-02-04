@@ -17,25 +17,24 @@ namespace HIR
 {
 class IR
 {
-private:
+public:
     std::vector<std::unique_ptr<HStmt>> TypeDefs;
     std::vector<std::unique_ptr<HStmt>> FuncProtos;
     std::vector<std::unique_ptr<HStmt>> FuncDefs;
     std::vector<std::unique_ptr<HStmt>> Globals;
 
-public:
     IR() = default;
     ~IR() = default;
 
+    void print();
 
 };
 
 class Walker : public AST::IVisitor
 {
-private:
-    std::unique_ptr<IR> m_ir;
-
 public:
+    std::unique_ptr<IR> ir = std::make_unique<IR>();
+
     Walker() = default;
     ~Walker() = default;
 

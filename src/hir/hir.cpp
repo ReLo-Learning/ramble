@@ -11,9 +11,14 @@ std::unique_ptr<IR> Lower(AST::Program* program)
     // Walk AST
     program->walk(&walker);
 
-    // Convert AST to IR
-
-    return std::make_unique<IR>();
+    return std::move(walker.ir);
 }
 
+void IR::print()
+{
+    for(const auto& var : this->Globals)
+    {
+        std::cout << var->str();
+    }
+}
 }

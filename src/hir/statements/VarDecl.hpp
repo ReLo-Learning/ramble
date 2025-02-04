@@ -12,18 +12,20 @@
 namespace HIR
 {
 
-class VarDecl : public HStmt
-{
+    class VarDecl : public HStmt
+    {
+    public:
+    Token ident;
+    std::unique_ptr<Type::IType> type;
+    std::unique_ptr<AST::IExpr> expr;
 
-public:
-VarDecl();
-// ~VarDecl();
+    VarDecl(Token ident, std::unique_ptr<Type::IType> type, std::unique_ptr<AST::IExpr> expr) : ident(ident), type(std::move(type)), expr(std::move(expr)) {}
+    // ~VarDecl();
 
-void accept(HVisitor *v);
-std::string str();
+    void accept(HVisitor *v);
+    std::string str();
 
-};
-
+    };
 }
 
 #endif
