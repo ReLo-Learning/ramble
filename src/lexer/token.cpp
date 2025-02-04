@@ -4,18 +4,20 @@ Token::Token(Kind kind)
 {
     this->type = kind;
 }
-Token::Token(Kind kind, int line, int column)
+Token::Token(Kind kind, int line, int column, std::streampos filePos)
 {
     this->type = kind;
     this->line = line;
     this->column = column;
+    this->filePos = filePos;
 }
-Token::Token(Kind kind, std::string value, int line, int column)
+Token::Token(Kind kind, std::string value, int line, int column, std::streampos filePos)
 {
     this->type = kind;
     this->line = line;
     this->column = column;
     this->value = value;
+    this->filePos = filePos;
 }
 
 Kind Token::kind(){ return this->type; }
@@ -51,8 +53,17 @@ std::string Token::str()
     return ss.str();
 }
 
+std::string Token::val()
+{
+    if (this->value.length() == 0)
+        return getType(this->type);
+    return this->value;
+}
+
 // function to get the line number of token
 int Token::getLine() { return this->line; }
 
 // function to get the column number of token
 int Token::getColumn() { return this->column; }
+
+std::streampos Token::getFilePos() { return this->filePos; }

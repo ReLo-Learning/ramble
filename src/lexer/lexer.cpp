@@ -37,26 +37,30 @@ Lexer::Lexer(std::string file)
     this->m_file = file;
     this->line = 0;
     this->col = 0;
-    this->src = std::ifstream(file);
+
+    this->file = std::make_unique<FileSet>();
+    this->file->filepath = std::filesystem::path(file);
+    this->file->filename = this->file->filepath.stem().string();
+    this->file->src = std::ifstream(file);
 }
 
 //See the next character
-char Lexer::peek(){ return this->src.peek(); }
+char Lexer::peek(){ return this->file->src.peek(); }
 
 //Get the next character
 char Lexer::next(){ 
-    this->src.get();
+    this->file->src.get();
     this->col++; 
-    return this->src.get(); 
+    return this->file->src.get(); 
 }
 
 char Lexer::get() { 
-    char c = this->src.get();
-    this->src.unget();
+    char c = this->file->src.get();
+    this->file->src.unget();
     return c; 
 }
 
-char Lexer::consume() { this->col++; return this->src.get(); }
+char Lexer::consume() { this->col++; return this->file->src.get(); }
 
 bool Lexer::check_and_consume(char c)
 {
@@ -66,6 +70,8 @@ bool Lexer::check_and_consume(char c)
 
     return isNext;
 }
+
+std::streampos Lexer::getFilePos() { return this->file->src.tellg(); }
 
 //Read until invalid character is found and break off
 //returns the found word
@@ -79,7 +85,7 @@ void Lexer::word(std::string &buff)
 
 void Lexer::handleInlineComment()
 {
-    while (this->get() != '\n' || this->src.eof())
+    while (this->get() != '\n' || this->file->src.eof())
         this->next();
 }
 
@@ -87,7 +93,7 @@ void Lexer::handleMultilineComment()
 {
     while (this->get() != '*' && this->peek() != '/')
     {
-        if (this->src.eof())
+        if (this->file->src.eof())
             panic("Multiline comment is not closed");
         
         this->next();
@@ -112,7 +118,7 @@ int isIdent(std::string const &w) { return (isalpha(w[0]) || w[0] == '_'); }
 
 Token Lexer::m_tokenize()
 {
-    while(!this->src.eof())
+    while(!this->file->src.eof())
     {   
         int line = this->line;
         int col = this->col;
@@ -129,7 +135,7 @@ Token Lexer::m_tokenize()
             this->col = 0;
 
             if (this->tokens.size() > 0 && this->tokens.back().kind() != SEMI)
-                return Token(SEMI, line, col);
+                return Token(SEMI, line, col, this->getFilePos());
                 
             break;
         
@@ -141,33 +147,33 @@ Token Lexer::m_tokenize()
 
         case '+':
             if (this->check_and_consume('+'))
-                return Token(INCR, this->line, this->col);
+                return Token(INCR, this->line, this->col, this->getFilePos());
             
             if (this->check_and_consume('='))
-                return Token(PEQ, this->line, this->col);
+                return Token(PEQ, this->line, this->col, this->getFilePos());
 
-            return Token(ADD, this->line, this->col);
+            return Token(ADD, this->line, this->col, this->getFilePos());
         
         case '-':
             if (this->check_and_consume('-'))
-                return Token(DECR, this->line, this->col);
+                return Token(DECR, this->line, this->col, this->getFilePos());
             
             if (this->check_and_consume('='))
-                return Token(SEQ, this->line, this->col);
+                return Token(SEQ, this->line, this->col, this->getFilePos());
             
             if (this->check_and_consume('>'))
-                return Token(ARWR, this->line, this->col);
+                return Token(ARWR, this->line, this->col, this->getFilePos());
             
-            return Token(SUB, this->line, this->col);
+            return Token(SUB, this->line, this->col, this->getFilePos());
         
         case '*':
             if (this->check_and_consume('*'))
-                return Token(POW, this->line, this->col);
+                return Token(POW, this->line, this->col, this->getFilePos());
             
             if (this->check_and_consume('='))
-                return Token(MEQ, this->line, this->col);
+                return Token(MEQ, this->line, this->col, this->getFilePos());
 
-            return Token(MUL, this->line, this->col);
+            return Token(MUL, this->line, this->col, this->getFilePos());
         
         case '/':
             if (this->check_and_consume('/'))
@@ -183,106 +189,106 @@ Token Lexer::m_tokenize()
             }
 
             if (this->check_and_consume('='))
-                return Token(DEQ, this->line, this->col);
+                return Token(DEQ, this->line, this->col, this->getFilePos());
 
-            return Token(DIV, this->line, this->col);
+            return Token(DIV, this->line, this->col, this->getFilePos());
         
         case '%':
             if (this->check_and_consume('='))
-                return Token(REQ, this->line, this->col);
+                return Token(REQ, this->line, this->col, this->getFilePos());
 
-            return Token(MOD, this->line, this->col);
+            return Token(MOD, this->line, this->col, this->getFilePos());
 
         case '=':
             if (this->check_and_consume('='))
-                return Token(EEQ, this->line, this->col);
+                return Token(EEQ, this->line, this->col, this->getFilePos());
             
-            return Token(EQ, this->line, this->col);
+            return Token(EQ, this->line, this->col, this->getFilePos());
         
         case '|':
             if (this->check_and_consume('|'))
-                return Token(OR, this->line, this->col);
+                return Token(OR, this->line, this->col, this->getFilePos());
             
             if (this->check_and_consume('='))
-                return Token(OEQ, this->line, this->col);
+                return Token(OEQ, this->line, this->col, this->getFilePos());
 
-            return Token(bOR, this->line, this->col);
+            return Token(bOR, this->line, this->col, this->getFilePos());
         
         case '&':
             if (this->check_and_consume('&'))
-                return Token(AND, this->line, this->col);
+                return Token(AND, this->line, this->col, this->getFilePos());
 
             if (this->check_and_consume('='))
-                return Token(AEQ, this->line, this->col);
+                return Token(AEQ, this->line, this->col, this->getFilePos());
 
-            return Token(bAND, this->line, this->col);
+            return Token(bAND, this->line, this->col, this->getFilePos());
         
         case '<':
             if (this->check_and_consume('<'))
-                return Token(SHL, this->line, this->col);
+                return Token(SHL, this->line, this->col, this->getFilePos());
             
             if (this->check_and_consume('='))
-                return Token(LEQ, this->line, this->col);
+                return Token(LEQ, this->line, this->col, this->getFilePos());
 
             // Can lead to ambiguous code like 5<-1
             if (this->check_and_consume('-'))
-                return Token(ARWL, this->line, this->col);
+                return Token(ARWL, this->line, this->col, this->getFilePos());
 
-            return Token(LSS, this->line, this->col);
+            return Token(LSS, this->line, this->col, this->getFilePos());
         
         case '>':
             if (this->check_and_consume('>'))
-                return Token(SHR, this->line, this->col);
+                return Token(SHR, this->line, this->col, this->getFilePos());
             
             if (this->check_and_consume('='))
-                return Token(GEQ, this->line, this->col);
+                return Token(GEQ, this->line, this->col, this->getFilePos());
 
-            return Token(GRT, this->line, this->col);
+            return Token(GRT, this->line, this->col, this->getFilePos());
         
         case '!':
             if (this->check_and_consume('='))
-                return Token(NEQ, this->line, this->col);
+                return Token(NEQ, this->line, this->col, this->getFilePos());
 
-            return Token(NOT, this->line, this->col);
+            return Token(NOT, this->line, this->col, this->getFilePos());
         
         case '^':
             if (this->check_and_consume('='))
-                return Token(XEQ, this->line, this->col);
+                return Token(XEQ, this->line, this->col, this->getFilePos());
 
-            return Token(XOR, this->line, this->col);
+            return Token(XOR, this->line, this->col, this->getFilePos());
         
         case '~':
-            return Token(bNOT, this->line, this->col);
+            return Token(bNOT, this->line, this->col, this->getFilePos());
 
         case ':':
-            return Token(COLON, this->line, this->col);
+            return Token(COLON, this->line, this->col, this->getFilePos());
         
         case ',':
-            return Token(COMMA, this->line, this->col);
+            return Token(COMMA, this->line, this->col, this->getFilePos());
 
         case ';':
-            return Token(SEMI, this->line, this->col);
+            return Token(SEMI, this->line, this->col, this->getFilePos());
 
         case '(':
-            return Token(LPAREN, this->line, this->col);
+            return Token(LPAREN, this->line, this->col, this->getFilePos());
         
         case ')':
-            return Token(RPAREN, this->line, this->col);
+            return Token(RPAREN, this->line, this->col, this->getFilePos());
         
         case '{':
-            return Token(LCURL, this->line, this->col);
+            return Token(LCURL, this->line, this->col, this->getFilePos());
         
         case '}':
-            return Token(RCURL, this->line, this->col);
+            return Token(RCURL, this->line, this->col, this->getFilePos());
 
         case '[':
-            return Token(LBRACK, this->line, this->col);
+            return Token(LBRACK, this->line, this->col, this->getFilePos());
 
         case ']':
-            return Token(RBRACK, this->line, this->col);
+            return Token(RBRACK, this->line, this->col, this->getFilePos());
         
         case '.':
-            return Token(PERIOD, this->line, this->col);
+            return Token(PERIOD, this->line, this->col, this->getFilePos());
         
         case '\'':
             while (this->get() != '\'')
@@ -291,7 +297,7 @@ Token Lexer::m_tokenize()
             }
             buff.push_back(this->consume());
 
-            return Token(RUNE_LIT, buff, this->line, this->col);
+            return Token(RUNE_LIT, buff, this->line, this->col, this->getFilePos());
         
         case '"':
             while (this->get() != '"')
@@ -300,10 +306,10 @@ Token Lexer::m_tokenize()
             }
             buff.push_back(this->consume());
 
-            return Token(STRING_LIT, buff, this->line, this->col);
+            return Token(STRING_LIT, buff, this->line, this->col, this->getFilePos());
         
         case EOF:
-            return Token(eof, this->line, this->col);
+            return Token(eof, this->line, this->col, this->getFilePos());
 
         default:
             if (isalpha(c) || c == '_')
@@ -314,11 +320,11 @@ Token Lexer::m_tokenize()
 
                 if (offset != -1)
                 {
-                    return Token(Kind(keyword_begin + offset), line, col);
+                    return Token(Kind(keyword_begin + offset), line, col, this->getFilePos());
                 }
                 else if (isIdent(buff))
                 {
-                    return Token(IDENT, buff, line, col);
+                    return Token(IDENT, buff, line, col, this->getFilePos());
                 }
             }
             else if (isdigit(c))
@@ -338,7 +344,7 @@ Token Lexer::m_tokenize()
                     buff.push_back(this->consume());
                 }
 
-                return Token(type, buff, line, col);
+                return Token(type, buff, line, col, this->getFilePos());
             }
             else
             {
@@ -349,8 +355,8 @@ Token Lexer::m_tokenize()
     }
 
     if (this->tokens.size() > 0 && this->tokens.back().kind() != SEMI)
-        this->tokens.push_back(Token(SEMI, this->line, this->col));
-    return Token(eof, this->line, this->col);
+        this->tokens.push_back(Token(SEMI, this->line, this->col, this->getFilePos()));
+    return Token(eof, this->line, this->col, this->getFilePos());
 }
 
 std::vector<Token> Lexer::tokenize()
@@ -367,6 +373,11 @@ std::vector<Token> Lexer::tokenize()
     }
 
     return this->tokens;
+}
+
+std::shared_ptr<FileSet> Lexer::getFileSet()
+{
+    return this->file;
 }
 
 void Lexer::print()
