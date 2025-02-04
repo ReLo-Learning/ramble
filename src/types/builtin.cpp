@@ -34,25 +34,23 @@ namespace Type
         "INVALID",
         "u8",
 
-        "i32",
-        "i8",
-        "i16",
-        "i32",
-        "i64",
+        "int",
+        "int8_t",
+        "int16_t",
+        "int32_t",
+        "int64_t",
 
-        "i32",
-        "i8",
-        "i16",
-        "i32",
-        "i64",
+        "unsigned int",
+        "uint8_t",
+        "uint16_t",
+        "uint32_t",
+        "uint64_t",
 
-        "f32",
-        "f64",
+        "float",
+        "double",
 
         "c64",
         "c128",
-
-        "i8*",
     };
 
     enum Basic {
