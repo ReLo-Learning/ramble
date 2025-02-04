@@ -16,6 +16,7 @@ class Parser
     private:
         unsigned int m_index;
         const std::vector<Token> m_tokens;
+        std::shared_ptr<FileSet> file;
 
         std::map<Kind, Precedence> precedences;
         std::map<Kind, int> prefixOps;
@@ -60,7 +61,7 @@ class Parser
         std::unique_ptr<AST::IStmt> ParseExternStmt();
 
         public: 
-        Parser(std::vector<Token> tokens);
+        Parser(std::vector<Token> tokens, std::shared_ptr<FileSet> fs);
 
         std::unique_ptr<AST::Program> parse();
 };

@@ -4,26 +4,47 @@ void Parser::panic(std::string msg)
 {
     Token currToken = this->get();
 
+    // find the position corresponding to the beginning of the line
+    std::streampos beginOfLine;
+    for (unsigned int i = 0; i < m_index; i++)
+    {
+        Token t = this->m_tokens.at(m_index - i);
+        if (t.kind() == Kind::SEMI)
+        {
+            beginOfLine = t.getFilePos();
+            break;
+        }
+    }
+
     int col = currToken.getColumn() + 1;
     int line = currToken.getLine() + 1;
+
+    // get the line which caused the error
+    std::string str;
+    this->file->src.clear();
+    this->file->src.seekg((int)beginOfLine, std::ios::beg);
+    std::getline(this->file->src, str);
+    std::getline(this->file->src, str);
+
 
     // Change terminal text color to red
     std::cout << "\033[31m";
 
-    // Print debug information
-    std::cout << "PARSER ERROR\n";
-    
-    std::cout << "   " << "Line: " << line << ":" << col << "\n";
+    std::cout << "PARSER ERROR (" << this->file->filepath << " [ln " << line << ", col " << col << "])\n";
 
     // Print the actual error message
     std::cout << "   " << msg << "\n";
+
+    // Print debug information
+    std::cout << str << "\n";
+    std::cout << std::string(col - 1, ' ') << std::string(currToken.val().length(), '^') << "\n";
 
     // Change terminal text color back to default
     std::cout << "\033[0m";
     exit(1);
 }
 
-Parser::Parser(std::vector<Token> tokens) : m_tokens(std::move(tokens))
+Parser::Parser(std::vector<Token> tokens, std::shared_ptr<FileSet> fs) : m_tokens(std::move(tokens)), file(fs)
 {
     this->m_index = 0;
     
@@ -120,9 +141,7 @@ std::unique_ptr<AST::IStmt> Parser::ParseStatement()
         return this->ParseExternStmt();
 
     default:
-        std::cout << this->get().str() << "\n";
-        panic("Illegal Token");
-        this->next();
+        this->panic("Illegal Token");
         break;
     }
 }
