@@ -1,4 +1,0 @@
-file(GLOB Sources *.cpp)
-file(GLOB Headers *.hpp *.h)
-
-add_library(Package STATIC ${Sources} ${Headers})
