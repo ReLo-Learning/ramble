@@ -1,1 +1,3 @@
 let y: int = 5;
+let x: float32 = 10.4;
+let abc: uint8 = 5;
