@@ -7,7 +7,6 @@
 #include <vector>
 #include <memory>
 #include <iostream>
-#include <map>
 
 #include "IVisitor.hpp"
 #include "expression.hpp"
@@ -21,7 +20,6 @@ class Program
     std::string path;
     
     std::vector<std::unique_ptr<IStmt>> stmts;
-    std::map<std::string, std::unique_ptr<VarDecl>> GlobalDefs;
 public:
     Program();
     ~Program() = default;
