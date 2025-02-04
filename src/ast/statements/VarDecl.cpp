@@ -19,4 +19,7 @@ namespace AST
 
         return ss.str(); 
     };
+
+    bool VarDecl::isConstant() { return this->constant; }
+    bool VarDecl::isUninitialized() { return this->uninitialized; }
 }
