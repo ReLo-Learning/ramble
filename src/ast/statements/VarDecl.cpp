@@ -7,13 +7,13 @@ namespace AST
     std::string VarDecl::str() 
     {
         std::stringstream ss;
-        ss << "{\n";
+        ss << "{ Variable Declaration:\n";
 
-        ss << "   " << std::left << std::setw(10) << "Variable: " << this->Ident.value << "\n";
+        ss << "   " << std::left << std::setw(10) << "Variable: " << this->m_ident.value << "\n";
 
-        ss << "   " << std::left << std::setw(10) << "Type: " << this->Type->str() << "\n";
+        ss << "   " << std::left << std::setw(10) << "Type: " << this->m_type->str() << "\n";
 
-        ss << "   " << std::left << std::setw(10) << "Value: " << this->expr->str() << "\n";
+        ss << "   " << std::left << std::setw(10) << "Value: " << this->m_expr->str() << "\n";
 
         ss << "}\n";
 

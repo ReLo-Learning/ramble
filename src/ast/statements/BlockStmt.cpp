@@ -9,14 +9,20 @@ namespace AST
     std::string BlockStmt::str()
     {
         std::stringstream ss;
-        ss << "{BlockStmt: ";
+        // ss << "{\n";
+        ss << "{\n";
+
+        ss << "BlockStmt:\n";
+        ss << "[\n";
 
         for (auto &stmt : this->m_stmts)
         {
-            ss << "\n\t" << stmt->str();
+            ss << stmt->str();
         }
 
-        ss << "\n}";
+        ss << "]\n";
+
+        ss << "}\n";
 
         return ss.str();
     }

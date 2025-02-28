@@ -17,10 +17,7 @@ namespace AST
     public:
         FuncParams(std::unique_ptr<Type::IType> type) : m_type(std::move(type)) {};
         FuncParams(Token ident, std::unique_ptr<Type::IType> type) : m_ident(ident), m_type(std::move(type)) {};
-        std::string str() 
-        {
-            return "{Param: " + m_type->str() + " }"; 
-        };
+        std::string str();
 
         std::unique_ptr<Type::IType> type() { return std::move(m_type); }
     };

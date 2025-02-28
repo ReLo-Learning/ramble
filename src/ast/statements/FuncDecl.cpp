@@ -2,6 +2,17 @@
 
 namespace AST
 {
+    std::string FuncParams::str()
+    {
+        std::stringstream ss;
+        ss << "{Parameter:\n";
+        ss << std::left << std::setw(10) << "Arg: " << this->m_ident.value << "\n";
+        ss << std::left << std::setw(10) << "Type: " << this->m_type->str() << "\n";
+        ss << "}\n";
+
+        return ss.str(); 
+    }
+
     void FuncDecl::accept(IVisitor *v) { v->visit(this); }
 
     void FuncDecl::addParam(std::unique_ptr<FuncParams> param)
@@ -41,6 +52,25 @@ namespace AST
 
     std::string FuncDecl::str()
     {
-        return "{Func: " + m_ident.value + " }";
+        std::stringstream ss;
+        ss << "{\n";
+        ss << std::left << std::setw(10) << "Function: " << this->m_ident.value << "\n";
+
+        ss << "Args: [";
+
+        if (this->m_params.size() > 0)
+            ss << "\n";
+
+        for (auto& param : m_params)
+            ss << param->str();
+
+        ss << "]\n";
+
+        ss << std::left << std::setw(10) << "Return_Type: " << this->m_retType->str() << "\n";
+        ss << "Body:\n";
+        ss << this->m_body->str() << "\n";
+        ss << "}\n";
+
+        return ss.str();
     }
 }

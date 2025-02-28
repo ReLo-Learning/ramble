@@ -12,16 +12,16 @@ namespace AST{
     class VarDecl : public IStmt
     {
     public:
-        Token Ident;
-        std::unique_ptr<Type::IType> Type;
-        std::unique_ptr<IExpr> expr;
+        Token m_ident;
+        std::unique_ptr<Type::IType> m_type;
+        std::unique_ptr<IExpr> m_expr;
         bool constant;
         bool uninitialized;
         
-        VarDecl(Token Ident, std::unique_ptr<Type::IType> Type, bool constant, std::unique_ptr<IExpr> expr) : Ident(Ident), Type(std::move(Type)), constant(constant), expr(std::move(expr)) {}
-        VarDecl(Token Ident, std::unique_ptr<Type::IType> Type, std::unique_ptr<IExpr> expr) : Ident(Ident), Type(std::move(Type)), expr(std::move(expr)) {}
-        VarDecl(Token Ident, std::unique_ptr<Type::IType> Type) : Ident(Ident), Type(std::move(Type)) {}
-        VarDecl(Token Ident, std::unique_ptr<IExpr> expr) : Ident(Ident), expr(std::move(expr)) {}
+        VarDecl(Token Ident, std::unique_ptr<Type::IType> Type, bool constant, std::unique_ptr<IExpr> expr) : m_ident(Ident), m_type(std::move(Type)), constant(constant), m_expr(std::move(expr)) {}
+        VarDecl(Token Ident, std::unique_ptr<Type::IType> Type, std::unique_ptr<IExpr> expr) : m_ident(Ident), m_type(std::move(Type)), m_expr(std::move(expr)) {}
+        VarDecl(Token Ident, std::unique_ptr<Type::IType> Type) : m_ident(Ident), m_type(std::move(Type)) {}
+        VarDecl(Token Ident, std::unique_ptr<IExpr> expr) : m_ident(Ident), m_expr(std::move(expr)) {}
         bool isConstant();
         bool isUninitialized();
         void accept(IVisitor *);
