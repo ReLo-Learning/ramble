@@ -2,6 +2,8 @@
 build/
 .antlr/
 .vscode/
+ramble-lang/*
+ramble-lang/
 
 test/*
 
