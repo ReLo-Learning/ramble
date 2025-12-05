@@ -1,0 +1,68 @@
+Need to add support for different types of errors
+
+Things to keep in mind:
+    add in nullable vs non-nullable variables
+    add question mark on variable declaration for nullable
+    (i.e. let var_name: string?;)
+    do not allow non constant global variables
+        global variables that use other variables as arguments must be sequential
+        i.e.
+            const a: int = 4;
+            const b: int = a * 2;
+    create a universal visitor virtual class and use for both AST and HIR
+    Remove HIR from module and use AST, lowering doesnt do much currently
+        will lower if implementing my own backend, instead of compiling to C
+
+Generics:
+    ident<types...>
+    during lexing set flag for open bracket and check that before creating a >> variable
+
+Checks:
+    when need to check for import loops
+        [math module]
+            import io
+        [io module]
+            import math
+    check for global ordering (ensure they are not cyclical)
+        const a = b;
+        const b = a;
+    check for multible of the same type definition
+
+Ordering globals:
+    during descent if a global has an undefined variable, move to a separate vector to hold it
+    continue descent and if that variable is found before finished processing insert it back, otherwise raise an error
+
+=====================
+Sample Output
+=====================
+
+/*******************
+Type Declarations
+*******************/
+
+struct StructName;
+
+/*******************
+Type Definitions
+********************/
+struct StructName {
+    type member;
+};
+
+/*******************
+Function Declarations
+*******************/
+int test(int, int);
+
+/*******************
+Globals
+*******************/
+int var_name = 0;
+
+/*******************
+Function Definitions
+*******************/
+int test(int a, int b)
+{
+    return a + b;
+}

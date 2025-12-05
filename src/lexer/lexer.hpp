@@ -30,6 +30,7 @@ class Lexer
         std::shared_ptr<FileSet> file;
         std::vector<Token> tokens;
         std::ifstream src;
+        std::streampos lineStartPos = 0;
 
         char peek();
         char next();

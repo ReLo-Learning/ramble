@@ -5,32 +5,21 @@ void Parser::panic(std::string msg)
     Token currToken = this->get();
 
     // find the position corresponding to the beginning of the line
-    std::streampos beginOfLine;
-    for (unsigned int i = 0; i < m_index; i++)
-    {
-        Token t = this->m_tokens.at(m_index - i);
-        if (t.kind() == Kind::SEMI)
-        {
-            beginOfLine = t.getFilePos();
-            break;
-        }
-    }
+    std::streampos beginOfLine = currToken.getFilePos();
 
-    int col = currToken.getColumn() + 1;
-    int line = currToken.getLine() + 1;
+    int col = currToken.getColumn();
+    int line = currToken.getLine();
 
     // get the line which caused the error
     std::string str;
     this->file->src.clear();
-    this->file->src.seekg((int)beginOfLine, std::ios::beg);
+    this->file->src.seekg(beginOfLine, std::ios::beg);
     std::getline(this->file->src, str);
-    std::getline(this->file->src, str);
-
 
     // Change terminal text color to red
     std::cout << "\033[31m";
 
-    std::cout << "PARSER ERROR (" << this->file->filepath << " [ln " << line << ", col " << col << "])\n";
+    std::cout << "PARSER ERROR (" << this->file->filepath << " [ln " << line + 1 << ", col " << col + 1 << "])\n";
 
     // Print the actual error message
     std::cout << "   " << msg << "\n";
@@ -111,7 +100,7 @@ Parser::Parser(std::vector<Token> tokens, std::shared_ptr<FileSet> fs) : m_token
 
 std::unique_ptr<AST::Program> Parser::parse()
 {
-    std::unique_ptr<AST::Program> program = std::make_unique<AST::Program>();
+    std::unique_ptr<AST::Program> program = std::make_unique<AST::Program>(this->file);
 
     while (this->get().kind() != eof)
     {
@@ -183,4 +172,5 @@ Precedence Parser::peekPrecedence() { return this->precedences[this->peek().kind
 bool Parser::expect(Kind kind) { return this->get().kind() == kind; }
 bool Parser::is(Kind kind) { return this->get().kind() == kind; }
 bool Parser::isNot(Kind kind) { return this->get().kind() != kind; }
+bool Parser::peekIs(Kind kind) { return this->peek().kind() == kind; }
 bool Parser::peekIsNot(Kind kind) { return this->peek().kind() != kind; }

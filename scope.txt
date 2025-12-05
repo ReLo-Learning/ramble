@@ -1,0 +1,21 @@
+stack of hashmaps
+each hashmap is a symbol table for the current scope
+each item on the stack is an unclosed scope
+
+Hash map that maps a string to a symbol
+
+scope -> enclosing value (i.e. global or function)
+
+when creating a 
+
+EXAMPLE:
+
+                            stack: ["global"]
+func main() {               stack: ["global", "main"]
+
+if a==b {                   stack: ["global", "main", "if"]
+    let a = 0;
+}                           stack: ["global", "main"]
+
+}                           stack: ["global"]
+                            stakc: []

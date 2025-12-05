@@ -36,6 +36,7 @@ class Parser
         bool expect(Kind kind);
         bool is(Kind kind);
         bool isNot(Kind kind);
+        bool peekIs(Kind kind);
         bool peekIsNot(Kind kind);
 
         std::unique_ptr<Type::IType> ParseType();
@@ -52,6 +53,7 @@ class Parser
         // std::unique_ptr<AST::IExpr> ParseRuneLiteral();
         std::unique_ptr<AST::IExpr> ParseStringLiteral();
         std::unique_ptr<AST::IExpr> HandleIdent();
+        std::unique_ptr<AST::IExpr> HandleCallExpr();
 
         std::unique_ptr<AST::IStmt> ParseVarDecl();
         std::unique_ptr<AST::IStmt> ParseFuncDecl();

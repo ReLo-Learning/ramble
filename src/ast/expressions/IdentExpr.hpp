@@ -10,12 +10,12 @@ namespace AST
     class IdentExpr : public IExpr
     {
     private:
-        std::string m_ident;
+        Token m_ident;
 
     public:
-        IdentExpr(std::string ident) : m_ident(ident) {}
+        IdentExpr(Token ident) : m_ident(ident) {}
         void accept(IVisitor *v);
-        std::string str() { return m_ident; }
+        std::string str() { return m_ident.val(); }
     };
 }
 

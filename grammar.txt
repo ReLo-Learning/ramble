@@ -1,7 +1,88 @@
+Current things:
+   - no non-constant global variables
+   - no method overloading
+   - no operator overloading
+   - always explicit type casting
+
+Types:
+Basics:
+   int int64 int32 int16 int8 uint64 uint32 uint16 uint8
+   float float32 float64
+   complex64 complex128
+   byte
+   char
+   rune
+   string
+
+Advanced:
+   type[size_1; size_2;...] (multi-dimension array)
+   type& (reference ; read-only)
+   type&& (reference ; read-write)
+   type* (shared pointer)
+   type^ (raw pointer)
+   type? (can be null)
+
 Variables:
    let varName: type;
    let varName: type = value;
    const varName: type = value;
 
 Functions:
-   func FuncName(param: type) -> return_type {}
+   [private] func FuncName(param: type) -> return_type {}
+   [private] func FuncName(param: type) -> (return_type1...) {}
+
+Lambda Functions:
+   {
+      (args) => {}
+   }
+
+
+Interfaces:
+   typedef InterName interface {
+      FuncName(args...) -> ret_type;
+   }
+
+   typedef InterName<T: stuff> interfact {
+      FuncName(args..) -> ret_type;
+   }
+
+Structs:
+   typedef StructName struct {
+      type ident;
+   }
+
+   StructName impl InterName {}
+
+   StructName impl InterName<Type> {}
+
+Struct Functions:
+   StructName::FuncName() -> return_type {}
+
+   StructName::{
+      FuncA() -> return_type {}
+      FuncB() -> return_type {}
+   }
+
+Enums:
+   typedef EnumName enum {
+      ident [= value]...
+   }
+
+Unions:
+   typedef UnionName union {
+      typeA identA
+      typeB identB
+   }
+
+Calling C stuff:
+   C::library::ident();
+
+Imports:
+   import "path/to/module"
+   import (
+      "path/a"
+      "path/b"
+   )
+
+Type Casting:
+   let a: type = (type)value

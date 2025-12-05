@@ -13,7 +13,7 @@ std::unique_ptr<AST::IStmt> Parser::ParseVarDecl()
 
     // ensure the next token is an ident (this will be variable name)
     if (!this->expect(IDENT))
-        panic("Expected IDENT but did not find it");
+        this->panic("Expected IDENT but did not find it");
 
     // get the variable name
     Token ident = this->consume();

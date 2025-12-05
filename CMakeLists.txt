@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 3.20)
 
 project(
     RambleCompiler
@@ -14,5 +14,5 @@ add_subdirectory(src)
 add_executable(ramble ${CMAKE_SOURCE_DIR}/app/compiler.cpp)
 
 target_link_libraries(
-    ramble PUBLIC ErrorLib LexerLib ASTLib ParserLib Utils Types HIR Module C_Codegen
+    ramble PUBLIC ErrorLib LexerLib ASTLib ParserLib Utils Types Module C_Codegen TypeChecker
 )

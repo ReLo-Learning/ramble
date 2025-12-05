@@ -71,7 +71,7 @@ bool Lexer::check_and_consume(char c)
     return isNext;
 }
 
-std::streampos Lexer::getFilePos() { return this->file->src.tellg(); }
+std::streampos Lexer::getFilePos() { return this->lineStartPos; }
 
 //Read until invalid character is found and break off
 //returns the found word
@@ -120,6 +120,7 @@ Token Lexer::m_tokenize()
 {
     while(!this->file->src.eof())
     {   
+        // this->lineStartPos = this->file->src.tellg();
         int line = this->line;
         int col = this->col;
         
@@ -133,6 +134,7 @@ Token Lexer::m_tokenize()
         case '\n':
             this->line++;
             this->col = 0;
+            this->lineStartPos = this->file->src.tellg();
 
             if (this->tokens.size() > 0 && this->tokens.back().kind() != SEMI)
                 return Token(SEMI, line, col, this->getFilePos());

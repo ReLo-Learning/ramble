@@ -5,6 +5,7 @@
 std::unique_ptr<AST::IExpr> Parser::ParseExpression(int precedence)
 {
     int primary = this->prefixOps[this->get().kind()];
+    std::cout << this->get().kindStr() << "\n";
     if (primary == 0)
         panic("Did not find a prefix operator");
 
@@ -43,6 +44,8 @@ std::unique_ptr<AST::IExpr> Parser::ParsePrefixExpression()
     case Kind::STRING_LIT:
         return this->ParseStringLiteral();
     case Kind::IDENT:
+        if (this->peekIs(Kind::LPAREN))
+            return this->HandleCallExpr();
         return this->HandleIdent();
         break;
     
